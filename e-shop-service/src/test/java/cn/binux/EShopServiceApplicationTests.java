@@ -1,7 +1,9 @@
 package cn.binux;
 
+import cn.binux.admin.service.ManagerService;
 import cn.binux.admin.service.MenuService;
 import cn.binux.admin.service.UserService;
+import cn.binux.pojo.Manager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class EShopServiceApplicationTests {
 
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private ManagerService managerService;
 	@Test
 	public void contextLoads() {
         System.out.println(us.getUserById(1).getUsername());
@@ -28,5 +32,10 @@ public class EShopServiceApplicationTests {
         System.out.println(menuService.getMenuByManagerId(1));
 //        System.out.println(menuService.getMenus(1));
         System.out.println(menuService.getMenuStr(1));
+
+        Manager m = new Manager();
+        m.setManagerName("1111");
+        m.setManagerPassword("11111111111");
+        System.out.println(managerService.addManager(m));
     }
 }

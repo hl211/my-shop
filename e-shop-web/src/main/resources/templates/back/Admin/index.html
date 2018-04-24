@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../Css/style.css"/>
+	<link rel="stylesheet" href="../plugins/bootstrap-table/bootstrap-table.min.css">
+	<link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
+	<style type="text/css">
+		body {
+			padding-bottom: 40px;
+		}
+
+		.sidebar-nav {
+			padding: 9px 0;
+		}
+
+		@media ( max-width: 980px) {
+			/* Enable use of floated navbar text */
+			.navbar-text.pull-right {
+				float: none;
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+		}
+	</style>
+</head>
+<body>
+<div class="tableBody">
+	<form class="form-inline definewidth m20" action="Admin/getManagers.bg"
+		  method="post">
+		账户名称： <input type="text" name="criteriaManagerName" id="criteriaManagerName"
+					 class="abc input-default" placeholder="">&nbsp;&nbsp;
+		<button type="submit" id="querybtn" class="btn btn-primary">查询</button>
+		&nbsp;&nbsp;
+		<button type="button" class="btn btn-success" id="addnew">新增管理账户</button>
+	</form>
+	<div class="definewidth">
+		<table id="mytab" class="table table-hover"></table>
+	</div>
+</div>
+
+</body>
+
+<!--bootstrap.min.js and jquery" > -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/bootstrap/bootstrap.min.js"></script>
+<!--table-->
+<script src="../plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+<!--table export-->
+<script src="../plugins/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../plugins/bootstrap-table/tableExport.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //生成用户数据
+        $('#mytab').bootstrapTable({
+            striped: true, //是否显示行间隔色
+            dataField: "res",
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pagination: true, //是否分页
+            queryParamsType: 'limit',
+            sidePagination: 'client',
+            pageSize: 1, //单页记录数
+            pageList: [5, 10], //分页步进值
+            showColumns: true,
+            showToggle: true,      //是否显示详细视图和列表视图的切换按钮
+            cardView: false,       //是否显示详细视图
+            clickToSelect: true, //是否启用点击选中行
+            showExport: true,  //是否显示导出
+            toolbarAlign: 'right',
+            buttonsAlign: 'left', //按钮对齐方式
+            columns: [{
+                title: '全选',
+                field: 'select',
+                checkbox: true,
+                width: 25,
+                align: 'center',
+                valign: 'middle'
+            },
+                {
+                    title: '序号',
+                    field: 'xindex',
+                    formatter: function operateFormatter(value, row, index) {
+                        return index + 1;
+                    }
+
+                },
+                {
+                    title: '管理员ID',
+                    field: 'managerId',
+                },
+                {
+                    title: '账户名称',
+                    field: 'managerName',
+                },
+                {
+                    title: '管理操作',
+                    field: 'opration',
+                    formatter: function operateFormatter(value, row, index) {
+                        var html = '<a href="toEditManager?managerId=' + row.managerId
+                            + '"class="editManager">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="deleteManager" href="deleteManager?managerId='
+                            + row.managerId + '">删除</a>';
+
+                        return html;
+                    }
+                }
+            ],
+            data: ${managers},
+            locale: 'zh-CN', //中文支持,
+
+        });
+
+        //删除事件
+        $(".deleteManager").click(function () {
+            var name = $(this).parent("td").prev("td").text();
+            if (confirm("确认删除管理员：" + name)) {
+                var href = this.href;
+                window.location.href = href;
+            }
+            return false;
+        });
+        //修改添加事件 带上查询信息
+        $(".editManager").click(function () {
+            var href = this.href;
+            window.location.href = href;
+            return false;
+        });
+
+        $("#addnew").click(function () {
+            window.location.href = "toaddManager";
+        });
+    })
+</script>
+</html>

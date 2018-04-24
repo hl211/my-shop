@@ -3,9 +3,8 @@ package cn.binux.admin.service.impl;
 import cn.binux.admin.service.ManagerService;
 import cn.binux.constant.Const;
 import cn.binux.mapper.ManagerMapper;
-import cn.binux.pojo.Manager;
-import cn.binux.pojo.ManagerExample;
-import cn.binux.pojo.ManagerPermission;
+import cn.binux.mapper.ManagerRoleMapper;
+import cn.binux.pojo.*;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,8 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired
     ManagerMapper managerMapper;
-
+    @Autowired
+    ManagerRoleMapper managerRoleMapper;
     /**
      * 添加一个管理员
      *
@@ -31,7 +31,8 @@ public class ManagerServiceImpl implements ManagerService {
      */
     @Override
     public int addManager(Manager manager) {
-        return 0;
+        managerMapper.insertSelective(manager);
+        return manager.getManagerId();
     }
 
     /**
@@ -42,7 +43,7 @@ public class ManagerServiceImpl implements ManagerService {
      * @return
      */
     @Override
-    public void addPromission(int managerId, int roleId) {
+    public void addPromission(Integer managerId, Integer roleId) {
 
     }
 
@@ -53,7 +54,7 @@ public class ManagerServiceImpl implements ManagerService {
      */
     @Override
     public void editManager(Manager manager) {
-
+        managerMapper.updateByPrimaryKeySelective(manager);
     }
 
     /**
@@ -62,8 +63,14 @@ public class ManagerServiceImpl implements ManagerService {
      * @param managerId
      */
     @Override
-    public void deleteManager(int managerId) {
-
+    public void deleteManager(Integer managerId) {
+//        删除用户
+        managerMapper.deleteByPrimaryKey(managerId);
+//        删除角色
+        ManagerRoleExample example = new ManagerRoleExample();
+        ManagerRoleExample.Criteria criteria = example.createCriteria();
+        criteria.andManagerIdEqualTo(managerId);
+        managerRoleMapper.deleteByExample(example);
     }
 
     /**
@@ -91,8 +98,8 @@ public class ManagerServiceImpl implements ManagerService {
      * @return
      */
     @Override
-    public Manager getManager(int managerId) {
-        return null;
+    public Manager getManager(Integer managerId) {
+        return managerMapper.selectByPrimaryKey(managerId);
     }
 
     /**
@@ -102,7 +109,8 @@ public class ManagerServiceImpl implements ManagerService {
      */
     @Override
     public List<Manager> getManagers() {
-        return null;
+        ManagerExample example = new ManagerExample();
+        return managerMapper.selectByExample(example);
     }
 
     /**
@@ -119,22 +127,35 @@ public class ManagerServiceImpl implements ManagerService {
     /**
      * 获取 查询出来的管理员（带权限）
      *
-     * @param manager
+     * @param
      * @return
      */
     @Override
-    public List<ManagerPermission> getManagerPermissions(Manager manager) {
-        return null;
+    public List<ManagerPermission> getManagerPermissions() {
+        return managerMapper.selectManagerPermission();
     }
+
 
     /**
      * 修改管理员的权限
-     *
-     * @param managerId
+     * @param managerRoleId
      * @param roleId
      */
     @Override
-    public void changePromission(int managerId, int roleId) {
+    public void changePromission(Integer managerRoleId, Integer roleId) {
+        ManagerRole managerRole = new ManagerRole();
+        managerRole.setManagerRoleId(managerRoleId);
+        managerRole.setRoleId(roleId);
+        managerRoleMapper.updateByPrimaryKeySelective(managerRole);
+    }
+
+    @Override
+    public void addManagerOrRole(Manager manager, Integer roleId) {
+        int managerId = addManager(manager);
+        ManagerRole managerRole = new ManagerRole();
+        managerRole.setManagerId(managerId);
+        managerRole.setRoleId(roleId);
+        managerRoleMapper.insertSelective(managerRole);
 
     }
 }

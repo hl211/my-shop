@@ -1,9 +1,18 @@
 package cn.binux.pojo;
 
 public class ManagerPermission {
+	private int managerRoleId;
 	private int managerId;
 	private String managerName;
 	private int roleId;
+
+	public int getManagerRoleId() {
+		return managerRoleId;
+	}
+
+	public void setManagerRoleId(int managerRoleId) {
+		this.managerRoleId = managerRoleId;
+	}
 	public int getManagerId() {
 		return managerId;
 	}

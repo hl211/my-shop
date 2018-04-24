@@ -2,6 +2,7 @@ package cn.binux.mapper;
 
 import cn.binux.pojo.Manager;
 import cn.binux.pojo.ManagerExample;
+import cn.binux.pojo.ManagerPermission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface ManagerMapper {
     List<Manager> selectByExample(ManagerExample example);
 
     Manager selectByPrimaryKey(Integer managerId);
+
+    List<ManagerPermission> selectManagerPermission();
 
     int updateByExampleSelective(@Param("record") Manager record, @Param("example") ManagerExample example);
 

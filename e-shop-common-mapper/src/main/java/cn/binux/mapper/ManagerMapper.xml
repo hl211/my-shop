@@ -6,6 +6,12 @@
     <result column="MANAGER_NAME" property="managerName" jdbcType="VARCHAR" />
     <result column="MANAGER_PASSWORD" property="managerPassword" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="BasePessionMap" type="cn.binux.pojo.ManagerPermission">
+    <id column="MANAGER_ROLE_ID" property="managerRoleId" jdbcType="INTEGER"/>
+    <result column="MANAGER_ID" property="managerId" jdbcType="VARCHAR"/>
+    <result column="MANAGER_NAME" property="managerName" jdbcType="VARCHAR"/>
+    <result column="ROLE_ID" property="roleId" jdbcType="INTEGER"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -87,6 +93,13 @@
     from manager
     where MANAGER_ID = #{managerId,jdbcType=INTEGER}
   </select>
+
+  <select id="selectManagerPermission" resultMap="BasePessionMap">
+     SELECT mng.MANAGER_ID,mng.MANAGER_NAME,ROLE_ID,MANAGER_ROLE_ID
+     FROM manager mng,manager_role
+     WHERE manager_role.MANAGER_ID=mng.MANAGER_ID;
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from manager
     where MANAGER_ID = #{managerId,jdbcType=INTEGER}
@@ -103,7 +116,7 @@
     values (#{managerId,jdbcType=INTEGER}, #{managerName,jdbcType=VARCHAR}, #{managerPassword,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.binux.pojo.Manager" >
+  <insert id="insertSelective" parameterType="cn.binux.pojo.Manager" useGeneratedKeys="true" keyProperty="managerId">
     insert into manager
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="managerId != null" >

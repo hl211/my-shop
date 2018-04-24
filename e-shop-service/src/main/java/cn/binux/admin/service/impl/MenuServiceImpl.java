@@ -97,7 +97,9 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public List<Menu> getAllMenus() {
-        return null;
+        MenuExample example = new MenuExample();
+        MenuExample.Criteria criteria = example.createCriteria();
+        return menuMapper.selectByExample(example);
     }
 
     /**
@@ -108,7 +110,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public Menu getMenu(Integer menuId) {
-        return null;
+        return menuMapper.selectByPrimaryKey(menuId);
     }
 
     /**
@@ -131,7 +133,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public void addMenu(Menu menu) {
-
+        menuMapper.insertSelective(menu);
     }
 
     /**
@@ -142,6 +144,6 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public void deleteMenu(Integer menuId) {
-
+        menuMapper.deleteByPrimaryKey(menuId);
     }
 }

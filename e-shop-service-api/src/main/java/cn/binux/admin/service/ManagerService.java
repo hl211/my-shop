@@ -18,7 +18,7 @@ public interface ManagerService {
      * @param manager
      * @return
      */
-    void addPromission(int managerId, int roleId);
+    void addPromission(Integer managerId, Integer roleId);
 
     /**
      * 修改管理员信息
@@ -30,7 +30,7 @@ public interface ManagerService {
      * 通过id删除管理员
      * @param managerId
      */
-    void deleteManager(int managerId);
+    void deleteManager(Integer managerId);
 
     /**
      * 通过管理员名称 获得管理员
@@ -44,7 +44,7 @@ public interface ManagerService {
      * @param managerId
      * @return
      */
-    Manager getManager(int managerId);
+    Manager getManager(Integer managerId);
 
     /**
      * 获取所有的管理员 数量较少 不采取分页
@@ -59,16 +59,18 @@ public interface ManagerService {
     List<Manager> getManagers(Manager manager);
     /**
      * 获取 查询出来的管理员（带权限）
-     * @param manager
+     * @param
      * @return
      */
-    List<ManagerPermission> getManagerPermissions(Manager manager);
+    List<ManagerPermission> getManagerPermissions();
 
     /**
      * 修改管理员的权限
      * @param managerId
      * @param roleId
      */
-    void changePromission(int managerId, int roleId);
+    void changePromission(Integer managerRoleId, Integer roleId);
+
+    void addManagerOrRole(Manager manager, Integer roleId);
 
 }
