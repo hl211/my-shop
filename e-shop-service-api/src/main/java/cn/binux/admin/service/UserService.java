@@ -1,6 +1,8 @@
 package cn.binux.admin.service;
 
 import cn.binux.pojo.User;
+
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -69,5 +71,5 @@ public interface UserService {
    */
   User getUserByUsername(String username);
 
-
+  List<User> getUserPager();
 }

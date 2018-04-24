@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserById(Integer userId) {
-        return userMapper.selectByPrimaryKey(1);
+        return userMapper.selectByPrimaryKey(userId);
     }
 
     /**
@@ -123,5 +124,12 @@ public class UserServiceImpl implements UserService {
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
         return userMapper.selectByExample(example).get(0);
+    }
+
+    @Override
+    public List<User> getUserPager() {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        return userMapper.selectByExample(example);
     }
 }
