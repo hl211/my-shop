@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.binux.mapper.MenuMapper">
+    <resultMap id="BaseResultMap" type="cn.binux.pojo.Menu">
+        <id column="MENU_ID" property="menuId" jdbcType="INTEGER"/>
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR"/>
+        <result column="PARENT_MENU" property="parentMenu" jdbcType="INTEGER"/>
+        <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR"/>
+        <result column="MENU_STATUS" property="menuStatus" jdbcType="INTEGER"/>
+        <result column="NOTE" property="note" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    MENU_ID, MENU_NAME, PARENT_MENU, MENU_URL, MENU_STATUS, NOTE
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.binux.pojo.MenuExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        where MENU_ID = #{menuId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMenuByManagerId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        WHERE MENU_ID IN
+        (SELECT MENU_ID FROM role_menu WHERE ROLE_ID IN
+        (SELECT ROLE_ID FROM manager_role WHERE MANAGER_ID =#{managerId,jdbcType=INTEGER}))
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from menu
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="cn.binux.pojo.MenuExample">
+        delete from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="cn.binux.pojo.Menu">
+    insert into menu (MENU_ID, MENU_NAME, PARENT_MENU, 
+      MENU_URL, MENU_STATUS, NOTE
+      )
+    values (#{menuId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{parentMenu,jdbcType=INTEGER}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{menuStatus,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="cn.binux.pojo.Menu">
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">
+                MENU_ID,
+            </if>
+            <if test="menuName != null">
+                MENU_NAME,
+            </if>
+            <if test="parentMenu != null">
+                PARENT_MENU,
+            </if>
+            <if test="menuUrl != null">
+                MENU_URL,
+            </if>
+            <if test="menuStatus != null">
+                MENU_STATUS,
+            </if>
+            <if test="note != null">
+                NOTE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">
+                #{menuId,jdbcType=INTEGER},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMenu != null">
+                #{parentMenu,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="menuStatus != null">
+                #{menuStatus,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="cn.binux.pojo.MenuExample" resultType="java.lang.Integer">
+        select count(*) from menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update menu
+        <set>
+            <if test="record.menuId != null">
+                MENU_ID = #{record.menuId,jdbcType=INTEGER},
+            </if>
+            <if test="record.menuName != null">
+                MENU_NAME = #{record.menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parentMenu != null">
+                PARENT_MENU = #{record.parentMenu,jdbcType=INTEGER},
+            </if>
+            <if test="record.menuUrl != null">
+                MENU_URL = #{record.menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.menuStatus != null">
+                MENU_STATUS = #{record.menuStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.note != null">
+                NOTE = #{record.note,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update menu
+        set MENU_ID = #{record.menuId,jdbcType=INTEGER},
+        MENU_NAME = #{record.menuName,jdbcType=VARCHAR},
+        PARENT_MENU = #{record.parentMenu,jdbcType=INTEGER},
+        MENU_URL = #{record.menuUrl,jdbcType=VARCHAR},
+        MENU_STATUS = #{record.menuStatus,jdbcType=INTEGER},
+        NOTE = #{record.note,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.binux.pojo.Menu">
+        update menu
+        <set>
+            <if test="menuName != null">
+                MENU_NAME = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMenu != null">
+                PARENT_MENU = #{parentMenu,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="menuStatus != null">
+                MENU_STATUS = #{menuStatus,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                NOTE = #{note,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where MENU_ID = #{menuId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.binux.pojo.Menu">
+    update menu
+    set MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      PARENT_MENU = #{parentMenu,jdbcType=INTEGER},
+      MENU_URL = #{menuUrl,jdbcType=VARCHAR},
+      MENU_STATUS = #{menuStatus,jdbcType=INTEGER},
+      NOTE = #{note,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=INTEGER}
+  </update>
+</mapper>

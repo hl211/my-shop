@@ -86,7 +86,6 @@ public final class Const {
     public static final String CART_KEY = "_xca";
 
     // Dubbox版本
-    public static final String XBIN_STORE_ADMIN_VERSION = "1.0.0";
-    public static final String XBIN_STORE_API_VERSION="1.0.0";
+    public static final String E_SHOP_API_VERSION = "1.0.0";
 
 }

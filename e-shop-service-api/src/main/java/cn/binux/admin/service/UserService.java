@@ -1,27 +1,73 @@
 package cn.binux.admin.service;
 
-import cn.binux.pojo.XbinResult;
-import cn.binux.pojo.sys.SysUser;
-
-import java.util.List;
+import cn.binux.pojo.User;
 import java.util.Map;
 
 public interface UserService {
-    /**
-     * class_name: cn.binx.shiro.service
-     * package: ShiroService
-     * describe: TODO
-     * creat_user: hl
-     * creat_date: 2018-03-20
-     * creat_time: 15:53
-     **/
-      Map<String, Object> getSysUserList(Integer pageIndex, Integer pageSize);
-      Map<String, Object> getSysUserList(Integer pageIndex, Integer pageSize,SysUser sysUser);
-      List<SysUser> getSysUserByBean(SysUser sysUser);
-      XbinResult saveSysUser(SysUser sysUser);
-      XbinResult deleteSysUserById(String [] ids);
-      XbinResult updateSysUserById(SysUser sysUser);
 
-      Map<String, Object> getSysUserRole(Integer pageIndex, Integer pageSize);
+  /**
+   * 登录成功返回 userId 返回为0则登录失败
+   * @param username
+   * @param password
+   * @return
+   */
+   int userLogin(String username, String password);
+
+  /**
+   * 注册成功返回 用户id
+   * @param user
+   * @return
+   */
+  int userRegister(User user);
+
+  /**
+   * 通过Id 获取用户
+   * @param userId
+   * @return
+   */
+  User getUserById(Integer userId);
+
+  /**
+   * 通过id修改用户
+   * @param user
+   */
+  void updateUserById(User user);
+
+  /**
+   * 获取 会员的分页信息
+   * @param currPage
+   * @param pageSize
+   * @return
+   */
+  Map<String, Object> getUserPager(int currPage, int pageSize);
+  /**
+   * 进行模糊查询时调用的方法
+   * @param currPage
+   * @param pageSize
+   * @param user
+   * @return
+   */
+
+  Map<String, Object> getUserPager(int currPage,int pageSize,User user);
+
+  /**
+   * 修改用户
+   * @param user
+   */
+  void editUser(User user);
+
+  /**
+   * 删除用户
+   * @param userId
+   */
+  void deleteUser(int userId);
+
+  /**
+   * 通过用户名获取用户
+   * @param username
+   * @return
+   */
+  User getUserByUsername(String username);
+
 
 }

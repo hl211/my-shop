@@ -45,3 +45,6 @@
 	*5、完成角色模块
 	*6、完成权限模块
 	*7、完成shiro权限控制
+	
+#访问的页面地址
+http://localhost:8100/swagger-ui.html

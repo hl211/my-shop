@@ -1,12 +1,5 @@
 package cn.binux.admin.service;
 
-import cn.binux.pojo.XbinResult;
-import cn.binux.pojo.sys.SysRole;
-
-import java.util.List;
-import java.util.Map;
-
-
 /**
  * class_name: cn.binux.admin.service
  * package: RoleService
@@ -17,15 +10,15 @@ import java.util.Map;
  **/
 public interface RoleService {
 
-      Map<String, Object> getSysRoleList(Integer pageIndex, Integer pageSize);
-      Map<String, Object> getSysRoleList(Integer pageIndex, Integer pageSize, SysRole sysRole);
-      List<SysRole> getSysRoleByBean(SysRole sysRole);
-      Map<String, Object> getSysRoleAll();
-      XbinResult saveSysRole(SysRole sysRole);
-      XbinResult deleteSysRoleById(String[] ids);
-      XbinResult updateSysRoleById(SysRole sysRole);
-
-      List<SysRole> getSysRoleByUserId(Integer userId);
+//      Map<String, Object> getSysRoleList(Integer pageIndex, Integer pageSize);
+//      Map<String, Object> getSysRoleList(Integer pageIndex, Integer pageSize, SysRole sysRole);
+//      List<SysRole> getSysRoleByBean(SysRole sysRole);
+//      Map<String, Object> getSysRoleAll();
+//      XbinResult saveSysRole(SysRole sysRole);
+//      XbinResult deleteSysRoleById(String[] ids);
+//      XbinResult updateSysRoleById(SysRole sysRole);
+//
+//      List<SysRole> getSysRoleByUserId(Integer userId);
 
 
 }

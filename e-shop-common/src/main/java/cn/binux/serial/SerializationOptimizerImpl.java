@@ -2,12 +2,10 @@ package cn.binux.serial;
 
 
 import cn.binux.pojo.*;
-import cn.binux.pojo.sys.SysPermission;
-import cn.binux.pojo.sys.SysRole;
-import cn.binux.pojo.sys.SysUser;
 import com.alibaba.dubbo.common.serialize.support.SerializationOptimizer;
 import com.alibaba.fastjson.JSONObject;
 
+import javax.naming.directory.SearchResult;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,27 +16,21 @@ public class SerializationOptimizerImpl implements SerializationOptimizer {
         List<Class> classes = new LinkedList<Class>();
         //这里可以把所有需要进行序列化的类进行添加
         classes.add(JSONObject.class);
-        classes.add(TbItem.class);
-        classes.add(TbContentCategory.class);
-        classes.add(TbContent.class);
-        classes.add(TbItemDesc.class);
-        classes.add(TbItemParam.class);
-        classes.add(TbOrder.class);
-        classes.add(TbOrderItem.class);
-        classes.add(TbUser.class);
-        classes.add(TbCategory.class);
-        classes.add(TbCategorySecondary.class);
-        classes.add(TbUserAddr.class);
-        classes.add(TbTransactionMessage.class);
+        classes.add(Address.class);
+        classes.add(Cart.class);
+        classes.add(Comment.class);
+        classes.add(Manager.class);
+        classes.add(ManagerRole.class);
+        classes.add(Menu.class);
+        classes.add(Orders.class);
+        classes.add(Product.class);
+        classes.add(Role.class);
+        classes.add(RoleMenu.class);
+        classes.add(User.class);
         classes.add(EuiResult.class);
         classes.add(EuiTreeNode.class);
         classes.add(XbinResult.class);
-        classes.add(SolrItem.class);
         classes.add(SearchResult.class);
-        classes.add(CartInfo.class);
-        classes.add(SysUser.class);
-        classes.add(SysRole.class);
-        classes.add(SysPermission.class);
         return classes;
     }
 }

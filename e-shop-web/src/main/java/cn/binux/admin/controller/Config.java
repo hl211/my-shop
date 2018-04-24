@@ -1,15 +1,13 @@
 package cn.binux.admin.controller;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-import cn.binux.utils.StorageFactory;
 
-@Configuration
-public class Config {
+public class Config extends SpringBootServletInitializer {
 
-	@Bean
-	public StorageFactory storageFactory(){
-		return new StorageFactory();
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Config.class);
 	}
 }

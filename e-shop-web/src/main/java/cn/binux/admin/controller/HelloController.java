@@ -1,6 +1,5 @@
 package cn.binux.admin.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @create 2017-04-08 下午2:50
  */
 
-@Controller
+
 public class HelloController {
 
     @RequestMapping("/hello")

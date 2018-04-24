@@ -29,6 +29,8 @@ beetl:
   templates-path: templates/
   config:
       html-tag-flag: true
+
+#spring.thymeleaf.cache: false
 #配置模板的后缀，自动读取spring.mvc.view.suffix
 spring:
   mvc:
@@ -42,10 +44,10 @@ server:
 # swagger2
 swagger2.package: cn.binux.admin.controller
 
-## fastdfs url
-#fastdfs.base.url: http://192.168.125.132/
-#
-## fastdfs storage
+# fastdfs url
+fastdfs.base.url: http://192.168.125.132/
+
+# fastdfs storage
 storage:
   type: fastdfs
   fastdfs:
