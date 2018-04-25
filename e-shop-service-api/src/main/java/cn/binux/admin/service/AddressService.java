@@ -15,7 +15,7 @@ public interface AddressService {
      * @param userId
      * @return
      */
-     Map<String,Object> getAddressPager(int currPage, int pageSize, int userId);
+    Map<String, Object> getAddressPager(Integer currPage, Integer pageSize, Integer userId);
 
     /**
      * 通过Id更新地址
@@ -29,7 +29,7 @@ public interface AddressService {
      *
      * @param addressId
      */
-    void deleteAddressById(int addressId);
+    void deleteAddressById(Integer addressId);
 
     /**
      * 增加地址 同时返回 自增的id
@@ -45,7 +45,7 @@ public interface AddressService {
      * @param addressId
      * @return
      */
-    Address getAddressById(int addressId);
+    Address getAddressById(Integer addressId);
 
     /**
      * 查询该用户的所有地址
@@ -53,5 +53,5 @@ public interface AddressService {
      * @param userId
      * @return
      */
-    List<Address> getAddressWithUserId(int userId);
+    List<Address> getAddressByUserId(Integer userId);
 }

@@ -34,14 +34,16 @@
                 var json = {"username": username, "password": password};
                 var url = "login.do";
                 $.post(url, json, function (data) {
-                    var logStatus = (data[0].logStatus == "true");
-                    $("#errorMsg").text("");
-                    if (logStatus) {
-                        window.location.href = "AboutBlank.jsp";
-                    } else {
-                        $("#errorMsg").text("用户名或密码错误");
-                    }
-                }, "json");
+                    alert(data)
+                    window.location.href = "/";
+                    // var logStatus = (data[0].logStatus == "true");
+                    // $("#errorMsg").text("");
+                    // if (logStatus) {
+                    //     window.location.href = "AboutBlank.jsp";
+                    // } else {
+                    //     $("#errorMsg").text("用户名或密码错误");
+                    // }
+                });
                 return false;
             });
         });
@@ -73,12 +75,12 @@ include("header.html")
                     <form action="login.do" method="post" name="login" id="login-form">
                         <fieldset class="input">
                             <p id="login-form-username">
-                                <label ="modlgn_username">用户名</label>
+                                <label id="modlgn_username">用户名</label>
                                 <input id="login_username" type="text" name="username" class="inputbox" size="18"
                                        autocomplete="off"><input type="hidden" id="verify_result" value="false">
                             </p>
                             <p id="login-form-password">
-                                <label ="modlgn_passwd">登录密码</label>
+                                <label id="modlgn_passwd">登录密码</label>
                                 <input id="login_passwd" type="password" name="password" class="inputbox" size="18"
                                        autocomplete="off">
                             </p>

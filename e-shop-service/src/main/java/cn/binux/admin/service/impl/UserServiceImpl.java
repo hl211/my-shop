@@ -43,7 +43,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public int userRegister(User user) {
-        return 0;
+        int res = userMapper.insertSelective(user);
+        if (res < 0) {
+            return 0;
+        }
+        return user.getUserId();
     }
 
     /**
@@ -64,7 +68,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updateUserById(User user) {
-
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     /**
@@ -123,7 +127,11 @@ public class UserServiceImpl implements UserService {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
-        return userMapper.selectByExample(example).get(0);
+        List<User> users = userMapper.selectByExample(example);
+        if (users == null || users.size() == 0) {
+            return null;
+        }
+        return users.get(0);
     }
 
     @Override

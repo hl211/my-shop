@@ -63,15 +63,15 @@
 
             </script>
             <ul class="my_index_menu">
-                <% if( session.username == null){ %>
+                <% if( session.userName == null){ %>
                 <li><a href="login.html">登录</a></li>
-                <li><a href="register.jsp">注册</a></li>
+                <li><a href="register.html">注册</a></li>
                 <% }else{ %>
-                <li><a href="account">
-                    <div id="test1">${session.username}</div>
+                <li><a href="account.html">
+                    <div id="test1">${session.userName}</div>
                 </a></li>
-                <li><a class="goLeoCart" href="leoCart.do">购物车</a></li>
-                <li><a id="logout" href="out.do">退出</a></li>
+                <li><a class="goLeoCart" href="leoCart.html">购物车</a></li>
+                <li><a id="logout" href="logout.do">退出</a></li>
                 <%}%>
 
             </ul>
@@ -83,7 +83,7 @@
     <div class="wrap">
         <div class="header-bottom-left">
             <div class="logo">
-                <a href="AboutBlank.jsp"><img src="images/logo.png" alt=""/></a>
+                <a href="AboutBlank.jsp"><img src="home/images/logo.png" alt=""/></a>
             </div>
             <div class="menu">
                 <ul class="megamenu skyblue">
