@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>header</title>
+    <style type="text/css">
+        ul.subCartList li i a:link, a:visited, a:active {
+            text-decoration: none;
+        }
+
+        ul.subCartList li i a:hover {
+            color: #D93600;
+            text-decoration: none;
+        }
+
+        ul.subCartList li i a {
+            color: #333;
+            outline: medium none;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            line-height: 18px;
+            margin-left: 15px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 250px;
+            height: 30px;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        ul.subCartList li {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="header-top">
+    <div class="wrap">
+        <div class="cssmenu">
+            <script type="text/javascript">
+                $(function () {
+
+                    $(".goLeoCart").click(function () {
+                        var userId = "${session.userId}";
+                        if (userId > 0) {
+                            return true;
+                        }
+                        if (confirm("请先登录，点击确定跳转到登录页面！")) {
+                            window.location.href = "/login.html";
+                        }
+                        return false;
+                    });
+                    $("#logout").click(function () {
+                        return confirm('确认退出当前账户？');
+                    });
+                    $("body").keydown(function (event) {
+                        if (event.keyCode == "13") {//keyCode=13是回车键
+                            $("#serchSubmit").click();
+                        }
+                    });
+                });
+
+            </script>
+            <ul class="my_index_menu">
+                <% if( session.username == null){ %>
+                <li><a href="login.html">登录</a></li>
+                <li><a href="register.jsp">注册</a></li>
+                <% }else{ %>
+                <li><a href="account">
+                    <div id="test1">${session.username}</div>
+                </a></li>
+                <li><a class="goLeoCart" href="leoCart.do">购物车</a></li>
+                <li><a id="logout" href="out.do">退出</a></li>
+                <%}%>
+
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="header-bottom">
+    <div class="wrap">
+        <div class="header-bottom-left">
+            <div class="logo">
+                <a href="AboutBlank.jsp"><img src="images/logo.png" alt=""/></a>
+            </div>
+            <div class="menu">
+                <ul class="megamenu skyblue">
+                    <li class="active grid"><a href="AboutBlank.jsp">主页</a>
+                    </li>
+                    <li class="active grid"><a href="getAllProduct.do">所有商品</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="header-bottom-right">
+            <div class="search">
+                <form id="serchSubmit" action="searchProduct.do" method="get">
+
+                </form>
+                <div id="response"></div>
+            </div>
+            <div class="tag-list">
+                <ul class="icon1 sub-icon1 profile_img">
+                    <li><a class="active-icon c2" href="#"> </a>
+                        <ul id="smallCartList" class="subCartList sub-icon1 list">
+
+                        </ul>
+                    </li>
+                </ul>
+                <ul id="xiaocart" class="last">
+                    <li><a class="goLeoCart" href="leoCart.do">购物车(1)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

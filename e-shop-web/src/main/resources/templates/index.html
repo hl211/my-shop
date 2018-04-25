@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <style type="text/css">
+
+    </style>
+    <title>LeoShop旗舰店</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="home/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="home/css/form.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="home/css/default.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="home/css/nivo-slider.css" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="home/js/jquery1.min.js"></script>
+    <!-- start menu -->
+    <link href="home/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <style type="text/css">
+        #div1 {
+            position: absolute;
+            margin-left: 450px;
+        }
+    </style>
+    <script type="text/javascript" src="js/megamenu.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".megamenu").megamenu();
+        });
+    </script>
+    <!--start slider -->
+    <link rel="stylesheet" href="home/css/fwslider.css" media="all">
+    <script src="home/js/jquery-ui.min.js"></script>
+    <script src="home/js/css3-mediaqueries.js"></script>
+    <script src="home/js/fwslider.js"></script>
+    <!--end slider -->
+    <script src="home/js/jquery.easydropdown.js"></script>
+</head>
+<body>
+<!--头部部分-->
+<%
+include("header.html")
+{
+}
+%>
+<!--主要内容-->
+<div id="fwslider">
+    <div class="slider_container">
+        <div class="slide">
+            <img src="home/images/banner.jpg" alt=""/>
+            <div class="slide_content">
+                <div class="slide_content_wrap">
+                    <h4 class="title">雷朋经典</h4>
+                    <p class="description">俱乐部</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="home/images/banner1.jpg" alt=""/>
+            <div class="slide_content">
+                <div class="slide_content_wrap">
+                    <h4 class="title">简约时尚</h4>
+                    <p class="description">创意雷朋</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部部分-->
+<%
+include("footer.html")
+{
+}
+%>
+</body>
+</html>

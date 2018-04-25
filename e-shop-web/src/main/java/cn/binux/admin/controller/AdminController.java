@@ -27,8 +27,8 @@ import java.util.Map;
 /**
  * Admin 首页Controller
  *
- * @author xubin.
- * @create 2017-02-11 下午3:38
+ * @author
+ * @create
  */
 
 @Controller
@@ -44,8 +44,10 @@ public class AdminController {
     @Reference(version = Const.E_SHOP_API_VERSION)
     private MenuService menuService;
 
+    
     @RequestMapping("/index")
     public String index() {
+
         return "back/login";
     }
 
