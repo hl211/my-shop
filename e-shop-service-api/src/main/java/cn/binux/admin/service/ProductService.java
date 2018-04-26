@@ -13,7 +13,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    public Product getProduct(int productId);
+    public Product getProduct(Integer productId);
 
     /**
      * 添加商品
@@ -29,11 +29,11 @@ public interface ProductService {
      * @param pageSize
      * @return
      */
-    public Map<String,Object> getPager(int currPage, int pageSize);
+    public Map<String, Object> getProductList(Integer currPage, Integer pageSize);
     /**
      * 获取所有的商品
      *
      * @return
      */
-    List<Product> getAll();
+    List<Product> getProductList();
 }

@@ -1,6 +1,7 @@
 package cn.binux.admin.controller;
 
 import cn.binux.admin.service.AddressService;
+import cn.binux.admin.service.ProductService;
 import cn.binux.admin.service.UserService;
 import cn.binux.constant.Const;
 import cn.binux.pojo.Address;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -25,6 +27,9 @@ public class HomeController {
 
     @Reference(version = Const.E_SHOP_API_VERSION)
     private AddressService addressService;
+
+    @Reference(version = Const.E_SHOP_API_VERSION)
+    private ProductService productService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -155,4 +160,17 @@ public class HomeController {
         }
         return "accountAddEdit";
     }
+
+
+    @RequestMapping("allProduct.html")
+    public String getAllProductList(Model model, Integer currPage, Integer pageSize) {
+        pageSize = 8;
+        if (currPage == null) {
+            currPage = 1;
+        }
+        Map<String, Object> productList = productService.getProductList(currPage, pageSize);
+        model.addAttribute("productList", productList);
+        return "allProduct";
+    }
+
 }

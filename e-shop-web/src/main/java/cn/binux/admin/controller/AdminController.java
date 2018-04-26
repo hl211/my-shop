@@ -96,11 +96,12 @@ public class AdminController {
 
 
     // 获取所有的管理员账户
-    @RequestMapping("/Admin/togetManagers")
+    @RequestMapping("/Admin/getManagers.html")
     public String getManagers(Model model) throws IOException {
         List<Manager> managers = managerService.getManagers();
         model.addAttribute("managers", JSON.toJSONString(managers));
-        return "/back/Admin/index";
+        System.out.println("---------------------------------------------------------");
+        return "back/Admin/index";
     }
 
     // 删除管理员账户
@@ -116,11 +117,11 @@ public class AdminController {
     }
 
     // 转发到管理员修改的edit页面
-    @RequestMapping("Admin/toEditManager")
+    @RequestMapping("/Admin/EditManager.html")
     public String toEditManager(Model model, Integer managerId) {
         Manager manager = managerService.getManager(managerId);
         model.addAttribute("manager", manager);
-        return "/back/Admin/edit";
+        return "back/Admin/edit";
     }
 
     // 修改管理员账户
@@ -137,7 +138,7 @@ public class AdminController {
     // 增加管理员账户
     @RequestMapping("/Admin/toaddManager")
     public String toAddManager() {
-        return "/back/Admin/add";
+        return "back/Admin/add";
     }
 
     // 增加一个管理员账户
@@ -169,7 +170,7 @@ public class AdminController {
 
         List<ManagerPermission> managerPermission = managerService.getManagerPermissions();
         model.addAttribute("managerPermission", JSON.toJSONString(managerPermission));
-        return "/back/Admin/promission";
+        return "back/Admin/promission";
     }
 
     @RequestMapping("/Admin/changePromission")
@@ -184,7 +185,7 @@ public class AdminController {
     public String togetMenus(Model model) {
         List<Menu> menus = menuService.getAllMenus();
         model.addAttribute("menus", JSON.toJSONString(menus));
-        return "/back/Menu/index";
+        return "back/Menu/index";
     }
 
     //删除菜单
@@ -222,7 +223,7 @@ public class AdminController {
     public String toEditMenu(Model model, Integer menuId) {
         Menu menu = menuService.getMenu(menuId);
         model.addAttribute("menu", menu);
-        return "/back/Menu/edit";
+        return "back/Menu/edit";
     }
 
     //编辑菜单页
@@ -239,7 +240,7 @@ public class AdminController {
     public String togetUsers(Model model) {
         List<User> users = userService.getUserPager();
         model.addAttribute("users", JSON.toJSONString(users));
-        return "/back/User/index";
+        return "back/User/index";
     }
 
 
@@ -248,7 +249,7 @@ public class AdminController {
     public String toEditUser(Model model, Integer userId) {
         User user = userService.getUserById(userId);
         model.addAttribute("user", user);
-        return "/back/User/edit";
+        return "back/User/edit";
     }
 
 }

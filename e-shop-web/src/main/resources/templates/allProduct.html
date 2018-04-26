@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <style type="text/css">
+
+    </style>
+    <title>LeoShop旗舰店</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="home/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="home/css/form.css" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="home/js/jquery1.min.js"></script>
+    <!-- start menu -->
+    <link href="home/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <style type="text/css">
+        #div1 {
+            margin-left: 450px;
+            margin-bottom: 10px;
+        }
+
+        .cont {
+            display: block;
+            float: left;
+            margin: 0 0;
+        }
+    </style>
+    <script type="text/javascript" src="home/js/megamenu.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".megamenu").megamenu();
+        });
+    </script>
+    <!--start slider -->
+    <link rel="stylesheet" href="home/css/fwslider.css" media="all">
+    <script src="home/js/jquery-ui.min.js"></script>
+    <script src="home/js/css3-mediaqueries.js"></script>
+    <script src="home/js/fwslider.js"></script>
+    <!--end slider -->
+    <script src="home/js/jquery.easydropdown.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+        });
+
+    </script>
+</head>
+<body>
+<!--头部部分-->
+<%
+include("header.html")
+{
+}
+%>
+<div class="main" style="margin: 0">
+    <div class="wrap">
+        <div class="section group">
+            <div class="cont span_2_of_3" style="width: 100%">
+                <h2 class="head">所有商品...</h2>
+                <% for(data in productList.aData){ %>
+
+                <%if((dataLP.index-1)%4==0){%>
+                <div class="top-box">
+                    <%}%>
+                    <div class="col_1_of_3 span_1_of_3" style="width: 23%">
+                        <a href="getProduct.html?productid=${data.productId}">
+                            <div class="inner_content clearfix">
+                                <div class="product_image">
+                                    <img style="height: 245px;" src="home/${data.productImagePath}"/>
+                                </div>
+                                <div class="sale-box">
+                                    <span class="on_sale title_shop">新品</span>
+                                </div>
+                                <div class="price">
+                                    <div class="cart-left">
+                                        <p class="title">
+                                            ${
+                                            strutil.subStringTo(data.productName,0,20)}...</p>
+                                        <br/>
+                                        <div class="price1">
+                                            <span class="actual">￥${data.productPrice}</span>
+                                        </div>
+                                    </div>
+                                    <div class="cart-right"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <%if((dataLP.index)%4==0 || dataLP.last){%>
+                    <div class="clear"></div>
+                </div>
+                <%}%>
+                <%}%>
+                <br/><br/><br/>
+                <div id="div1">
+                    <%if(productList.currPage==1){%>
+                    首页 &nbsp;&nbsp;上一页
+                    <%}%>
+                    <%if(productList.currPage>1){%>
+                    <a class="pageturn" href="allProduct.html?currPage=1">首页</a>&nbsp;&nbsp;
+                    <a class="pageturn" href="allProduct.html?currPage=${productList.currPage-1}">上一页</a>&nbsp;&nbsp;
+                    <%}%>
+                    <%if(productList.currPage==productList.pageCount){%>
+                    下一页&nbsp;&nbsp;尾页
+                    <%}%>
+                    <%if(productList.currPage< productList.pageCount){%>
+                    <a class="pageturn" href="allProduct.html?currPage=${productList.currPage+1}">下一页</a>&nbsp;&nbsp;
+                    <a class="pageturn" href="allProduct.html?currPage=${productList.pageCount}">尾页</a>&nbsp;&nbsp;
+                    <%}%>
+                    ${productList.dataCount}条记录${productList.currPage}/${productList.pageCount}页
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!--底部部分-->
+<%
+include("footer.html")
+{
+}
+%>
+</body>
+</html>
