@@ -126,7 +126,7 @@ $(function(){
 	// 为继续购物添加事件
 	$(".returnbuy_btn").click(
 		function() {
-			window.location.href = "AboutBlank.jsp";// 重定向到主页
+            window.location.href = "allproduct.html";// 重定向到主页
 		});
 	// 为结算添加事件
 	$("#goToBuyleo").click(function() {
@@ -260,7 +260,7 @@ function toggleBlankCart() {
 		$("div#cart-wrapper").remove();
 		$("div#blackcart").show();
 		$("div.tag-list ul li ul.subCartList").empty().append(
-				"<li><p>请点击<a href='AboutBlank.jsp'>这里</a>选择产品</p></li>");
+            "<li><p>请点击<a href='allproduct.html'>这里</a>选择产品</p></li>");
 		$(".last li a").text("购物车(0)");
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.binux.mapper.OrdersMapper" >
-  <resultMap id="BaseResultMap" type="cn.binux.pojo.Orders" >
+  <resultMap id="BaseResultMap" type="cn.binux.pojo.Orders">
     <id column="ORDER_ID" property="orderId" jdbcType="INTEGER" />
     <result column="ORDER_NUM" property="orderNum" jdbcType="VARCHAR" />
     <result column="ORDER_TIME" property="orderTime" jdbcType="TIMESTAMP" />
@@ -350,4 +350,19 @@
       VISIBLE = #{visible,jdbcType=INTEGER}
     where ORDER_ID = #{orderId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByOrderList" resultMap="BaseResultMap">
+    select ORDER_NUM,ORDER_TIME,USERNAME PRODUCT_NAME, ORDER_STATUS,
+    sum(PRODUCT_PRICE*SALE_COUNT) PRODUCT_PRICE,
+    SUM(SALE_COUNT)SALE_COUNT,SEND_PLACE,SEND_PHONE,SEND_MAN
+    from orders o left join user u on o.USER_ID=u.USER_ID
+    where VISIBLE=1
+    GROUP BY ORDER_NUM ORDER BY ORDER_TIME DESC;
+  </select>
+  <select id="deleOrdersByOrderNum" parameterType="java.lang.String">
+
+ update orders SET VISIBLE=0
+ where ORDER_NUM=#{orderNum,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

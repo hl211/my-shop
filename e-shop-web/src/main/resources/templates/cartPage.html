@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>eShop_购物车</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="home/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="home/js/jquery1.min.js"></script>
+    <!-- start menu -->
+    <link href="home/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <script type="text/javascript" src="home/js/megamenu.js"></script>
+
+    <link rel="stylesheet" href="home/css/cart2.css" type="text/css">
+    <script type="text/javascript" src="/home/js/checkout.js"></script>
+
+
+    <!-- dropdown -->
+    <script src="js/jquery.easydropdown.js"></script>
+</head>
+<body>
+<%
+include("header.html")
+{
+}
+%>
+
+<div class="clear"></div>
+<div class="mycar-index">
+    <h1>购物车</h1>
+    <div id="cart-wrapper">
+        <%if (cartInfos=="false"){%>
+        <div class="cart-blank">
+            您的购物车中暂无商品，赶快<a href="allProduct.html">挑选心爱的商品</a>吧！
+        </div>
+        <%}else{%>
+
+        <form action="buyleo.do" method="get" id="cartFormSubmit">
+            <table>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th style="width: 600px;">商品名称</th>
+                    <!-- <th>商品积分</th> -->
+                    <th>商品单价</th>
+                    <th>数量</th>
+                    <th style="width: 100px;">小计</th>
+                    <th class="cart_last" style="width: 100px;">删除</th>
+                </tr>
+                </thead>
+                <tbody id="cartbody">
+                <%for (cartProduct in cartInfos){%>
+
+                <tr>
+                    <td class="checkboxtd">
+                        <input checked="checked" name="cartId" value="${cartProduct.cartId}"
+                               class="checkbox" type="checkbox">
+                    </td>
+                    <td style="width: 600px;"><a target="_blank"
+                                                 href="getProduct.do?productid=${cartProduct.productId }"
+                                                 class="cart_list_img"><img
+                            src="home/${cartProduct.productImagePath }"
+                            style="cursor: pointer;" height="50" width="36"></a>
+                        <p>
+                            <a target="_blank"
+                               href="getProduct.do?productid=${cartProduct.productId }">${cartProduct.productName
+                                }</a>
+                        </p></td>
+                    <!-- <td style="font-weight:bold; font-size:14px;">0</td> -->
+                    <td class="mktprice1" style="font-weight: bold; font-size: 14px;">
+                        <b>${cartProduct.productPrice }</b>
+                    </td>
+                    <td class="cart-quantity" style="text-align: center;">
+                        <div class="Numinput">
+                            <span class="numadjust decrease">-</span>
+                            <input name="num" size="5" value="${cartProduct.saleCount}" type="text">
+                            <span class="numadjust increase">+</span>
+
+                        </div>
+                    </td>
+                    <td class="itemTotal"
+                        style="color: #ff6700; font-size: 14px; font-weight: bold; width: 100px;">
+                        <b>
+                            ${cartProduct.saleCount*cartProduct.productPrice}
+                        </b>
+                    </td>
+                    <td class="cart_last" style="width: 100px;"><a href="#"
+                                                                   class="delete"></a></td>
+                    <td class="cartId"><input type="hidden"
+                                              value="${cartProduct.cartId }"></td>
+                </tr>
+                <%}%>
+                </tbody>
+            </table>
+            <!-- 总价 -->
+            <div class="cart-wrapper">
+                <div class="yes_bonded">
+
+                    <span class="c08"> 商品总价: <span class="color03" id="total">
+
+							</span>
+							</span>
+                </div>
+                <div class="cart_tools">
+                    <div class="btn">
+                        <input class="clean_btn white-btn" value="清空购物车" type="button">
+                    </div>
+                    <div class="btn">
+                        <input class="returnbuy_btn yellow-btn" value="继续购物"
+                               type="button">
+                    </div>
+
+                    <div class="btn">
+                        <input id="goToBuyleo" class="checkout-btn green-btn" value="去结算" type="button">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <%}%>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<%
+include("footer.html")
+{
+}
+%>
+</body>
+
+</body>
+</html>

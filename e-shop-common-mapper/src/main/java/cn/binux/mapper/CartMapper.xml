@@ -7,6 +7,17 @@
     <result column="SALE_COUNT" property="saleCount" jdbcType="INTEGER" />
     <result column="USER_ID" property="userId" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="BaseResultMapInfo" type="cn.binux.pojo.CartInfo">
+    <id column="CART_ID" property="cartId" jdbcType="INTEGER"/>
+    <result column="PRODUCT_ID" property="productId" jdbcType="INTEGER"/>
+    <result column="SALE_COUNT" property="saleCount" jdbcType="INTEGER"/>
+    <result column="USER_ID" property="userId" jdbcType="INTEGER"/>
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+    <result column="PRODUCT_PRICE" property="productPrice" jdbcType="DOUBLE"/>
+    <result column="PRODUCT_IMAGE_PATH" property="productImagePath" jdbcType="VARCHAR"/>
+  </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -193,4 +204,11 @@
       USER_ID = #{userId,jdbcType=INTEGER}
     where CART_ID = #{cartId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUid" resultMap="BaseResultMapInfo" parameterType="java.lang.Integer">
+ select p.PRODUCT_NAME ,p.PRODUCT_PRICE,p.PRODUCT_IMAGE_PATH, c.CART_ID, c.SALE_COUNT,c.PRODUCT_ID
+ from cart c left join product p
+ on p.PRODUCT_ID=c.PRODUCT_ID
+where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

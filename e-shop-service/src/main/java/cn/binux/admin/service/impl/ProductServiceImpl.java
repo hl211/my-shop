@@ -85,8 +85,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductInfo> getProductOrderInfoListBy() {
-        return productMapper.selectProductByOrder();
+    public List<ProductInfo> getProductOrderInfoListBy(Integer productId) {
+        if (productId < 0) {
+            return productMapper.selectProductByOrder(null);
+        }
+        return productMapper.selectProductByOrder(productId);
     }
 
     @Override
@@ -105,5 +108,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int updateProductById(Product product) {
         return productMapper.updateByPrimaryKeySelective(product);
+    }
+
+    @Override
+    public List<Product> getHostProductList(Integer hostnum) {
+        return productMapper.selectHostProduct(hostnum);
     }
 }

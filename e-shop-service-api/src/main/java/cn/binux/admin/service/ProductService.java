@@ -38,11 +38,13 @@ public interface ProductService {
      */
     List<Product> getProductList();
 
-    List<ProductInfo> getProductOrderInfoListBy();
+    List<ProductInfo> getProductOrderInfoListBy(Integer productId);
 
     int deleteProductsByIds(String[] productIds);
 
     int updateProductStatus(Integer productId, Integer productStatus);
 
     int updateProductById(Product product);
+
+    List<Product> getHostProductList(Integer hostnum);
 }

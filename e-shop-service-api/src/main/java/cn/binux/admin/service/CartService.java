@@ -1,6 +1,7 @@
 package cn.binux.admin.service;
 
 import cn.binux.pojo.Cart;
+import cn.binux.pojo.CartInfo;
 import cn.binux.pojo.Product;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface CartService {
      * @param userId
      * @return
      */
-    List<Cart> getCartForList(int userId);
+    List<Cart> getCartForList(Integer userId);
 
     /**
      * 更新 cart
@@ -29,21 +30,21 @@ public interface CartService {
      * @param cartId
      * @return
      */
-    Cart getCart(int cartId);
+    Cart getCart(Integer cartId);
 
     /**
      * 删除一条购物车数据
      *
      * @param cartId
      */
-    void deleteCartById(int cartId);
+    void deleteCartById(Integer cartId);
 
     /**
      * 清空该用户的购物车
      *
      * @param userId
      */
-    void deleteCartByUser(int userId);
+    void deleteCartByUser(Integer userId);
 
     /**
      * 获取该用户的 cart-product 映射集合
@@ -51,7 +52,7 @@ public interface CartService {
      * @param userId
      * @return
      */
-    Map<Cart, Product> getCartProductMap(int userId);
+    Map<Cart, Product> getCartProductMap(Integer userId);
 
     /**
      * 获取购物车数量
@@ -59,7 +60,7 @@ public interface CartService {
      * @param userId
      * @return
      */
-    int cartCount(int userId);
+    int cartCount(Integer userId);
 
     /**
      * 给购物车添加一条数据
@@ -76,7 +77,7 @@ public interface CartService {
      * @param cartIds
      * @return
      */
-    Map<Cart, Product> getCartProductMap(int userId, String[] cartIds);
+    Map<Cart, Product> getCartProductMap(Integer userId, String[] cartIds);
 
     /**
      * 删除该用户已经下单的 购物车记录
@@ -84,11 +85,17 @@ public interface CartService {
      * @param userId
      * @param cartIds
      */
-    void deleteCartByUserCart(int userId, String[] cartIds);
+    void deleteCartByUserCart(Integer userId, String[] cartIds);
 
     /**
      * 通过订单编号获取商品的ID和购买数量
      * @param orderNum
      */
     List<Cart> getCartsByOrderNum(String orderNum);
+
+    int cartHaveShop(Integer userId, Integer productId);
+
+    List<CartInfo> getCartList(Integer userId);
+
+
 }

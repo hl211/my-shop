@@ -87,12 +87,27 @@
     PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_DESC, PRODUCT_IMAGE_PATH, STORE_NUM, 
     PRODUCT_STATUS
   </sql>
-  <select id="selectProductByOrder" resultMap="ResultMapProductInfo">
+  <select id="selectProductByOrder" parameterType="java.lang.Integer" resultMap="ResultMapProductInfo">
 SELECT p.PRODUCT_ID ,PRODUCT_NAME,PRODUCT_PRICE,STORE_NUM,salesAmount,
 sales,levelStatistic,PRODUCT_IMAGE_PATH ,PRODUCT_DESC ,PRODUCT_STATUS
 FROM product p
 left join(SELECT PRODUCT_ID,(PRODUCT_PRICE*SUM(SALE_COUNT)) salesAmount,SUM(SALE_COUNT) sales,ROUND(AVG(LEVEL),2) levelStatistic
-FROM orders o left join comment c on o.ORDER_ID=c.ORDER_ID GROUP BY PRODUCT_ID) amount on p.PRODUCT_ID=amount.PRODUCT_ID;
+    FROM orders o left join comment c on o.ORDER_ID=c.ORDER_ID GROUP BY PRODUCT_ID) amount on
+    p.PRODUCT_ID=amount.PRODUCT_ID
+    <if test="productId != null">
+      WHERE p.PRODUCT_ID = #{productId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+
+  <select id="selectHostProduct" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select p.PRODUCT_ID ,PRODUCT_NAME,PRODUCT_PRICE,sales,PRODUCT_IMAGE_PATH
+    from product p right join (SELECT PRODUCT_ID,SUM(SALE_COUNT) sales
+    FROM orders o GROUP BY PRODUCT_ID order by sales desc)
+    amount on p.PRODUCT_ID=amount.PRODUCT_ID
+    <if test="hostnum != null">
+      limit #{hostnum,jdbcType=INTEGER}
+    </if>
 
   </select>
 
@@ -274,4 +289,6 @@ FROM orders o left join comment c on o.ORDER_ID=c.ORDER_ID GROUP BY PRODUCT_ID) 
       #{item}
     </foreach>
   </delete>
+
+
 </mapper>

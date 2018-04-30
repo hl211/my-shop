@@ -1,9 +1,7 @@
 package cn.binux.admin.controller;
 
-import cn.binux.admin.service.ManagerService;
-import cn.binux.admin.service.MenuService;
-import cn.binux.admin.service.ProductService;
-import cn.binux.admin.service.UserService;
+import cn.binux.admin.service.*;
+import cn.binux.admin.util.Result;
 import cn.binux.constant.Const;
 import cn.binux.pojo.*;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -50,6 +48,9 @@ public class AdminController {
 
     @Reference(version = Const.E_SHOP_API_VERSION)
     private ProductService productService;
+
+    @Reference(version = Const.E_SHOP_API_VERSION)
+    private OrderService orderService;
 
 
     @RequestMapping("/index")
@@ -283,7 +284,8 @@ public class AdminController {
 
     @RequestMapping("/Product/index.html")
     public String getproduct(Model model) {
-        List<ProductInfo> allproductlist = productService.getProductOrderInfoListBy();
+        Integer prductId = -1;
+        List<ProductInfo> allproductlist = productService.getProductOrderInfoListBy(prductId);
         model.addAttribute("allproduct", JSON.toJSONString(allproductlist));
         return "back/Product/index";
     }
@@ -393,6 +395,39 @@ public class AdminController {
     }
 
 
+    @RequestMapping("/Order/index.html")
+    public String getOrderList(Model model) {
+        List<Orders> orders = orderService.getOrderList();
+        model.addAttribute("orders", JSON.toJSONString(orders));
+        return "back/Order/index";
+    }
+
+
+    @RequestMapping("/Order/deleteOrder.do")
+    @ResponseBody
+    public String deleteOrder(Model model, String orderid) {
+        Result result = new Result();
+        String[] array = orderid.split(",");
+        if (array != null && array.length > 0) {
+            orderService.delOrder(array);
+            result.setStatus("200");
+            result.setText("删除成功");
+            return JSON.toJSONString(result);
+        }
+        result.setStatus("204");
+        result.setText("删除失败");
+        return JSON.toJSONString(result);
+    }
+
+
+    @RequestMapping("/Order/getOrderProduct.html")
+
+    public String getOrderProduct(Model model, String orderNum) {
+        List<Orders> list = orderService.getOrderProducts(orderNum);
+        model.addAttribute("orders", JSON.toJSONString(list));
+        return "back/Order/shopInfo";
+    }
+
     // 使用upload组件时 构建product对象
     private Product buildProduct(String imagePath, String fileFieldName,
                                  Map<String, String[]> formParam) {
@@ -446,33 +481,5 @@ public class AdminController {
     }
 
 
-    class Result {
-        private String status;
-        private String text;
-        private Object data;
 
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public Object getData() {
-            return data;
-        }
-
-        public void setData(Object data) {
-            this.data = data;
-        }
-    }
 }

@@ -14,7 +14,7 @@ public interface OrderService {
      * @param userId
      * @return
      */
-    Set<String> getOrderNum(int userId);
+    Set<String> getOrderNum(Integer userId);
 
     /**
      * 根据某一订单号获取其所有商品信息
@@ -22,7 +22,7 @@ public interface OrderService {
      * @param orderNums
      * @return
      */
-    List<OrderProduct> getOrderProducts(String orderNums);
+    List<Orders> getOrderProducts(String orderNums);
 
     /**
      * 获取某一订单所有的信息
@@ -36,12 +36,12 @@ public interface OrderService {
     /**
      * 获取所有的订单信息
      *
-     * @param currPage
-     * @param pageSize
+     * @param
+     * @param
      * @param userId
      * @return
      */
-    List<OrderMsg> getOrderMsgs(int userId);
+    List<OrderMsg> getOrderMsgs(Integer userId);
 
     /**
      * 添加订单
@@ -65,7 +65,7 @@ public interface OrderService {
      * @param orderNum
      * @param status
      */
-    void changeOrderStatus(String orderNum, int status);
+    void changeOrderStatus(String orderNum, Integer status);
 
     /**
      * 更改订单是否前台可见
@@ -73,5 +73,14 @@ public interface OrderService {
      * @param orderNum
      * @param status
      */
-    void changeOrderVisible(String orderNum, int status);
+    void changeOrderVisible(String orderNum, Integer status);
+
+    /**
+     * 后台获取订单所有列表
+     *
+     * @return
+     */
+    List<Orders> getOrderList();
+
+    void delOrder(String[] orders);
 }

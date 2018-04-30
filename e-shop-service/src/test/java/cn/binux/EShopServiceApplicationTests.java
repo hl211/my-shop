@@ -43,6 +43,6 @@ private ProductService productService;
 @Test
 public void product() {
     System.out.println(productService.getProductList(1, 8));
-    System.out.println(productService.getProductOrderInfoListBy());
+    System.out.println(productService.getProductOrderInfoListBy(null));
 }
 }

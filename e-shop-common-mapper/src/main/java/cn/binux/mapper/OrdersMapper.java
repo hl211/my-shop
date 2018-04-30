@@ -28,4 +28,9 @@ public interface OrdersMapper {
     int updateByPrimaryKeySelective(Orders record);
 
     int updateByPrimaryKey(Orders record);
+
+    List<Orders> selectByOrderList();
+
+    void deleOrdersByOrderNum(@Param("orderNum") String orderNum);
+
 }

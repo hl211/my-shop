@@ -22,7 +22,7 @@ public interface ProductMapper {
 
     Product selectByPrimaryKey(Integer productId);
 
-    List<ProductInfo> selectProductByOrder();
+    List<ProductInfo> selectProductByOrder(@Param("productId") Integer productId);
 
     int updateByExampleSelective(@Param("record") Product record, @Param("example") ProductExample example);
 
@@ -33,4 +33,6 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
     int deleteProductsByIds(@Param("productIds") String[] productIds);
+
+    List<Product> selectHostProduct(@Param("hostnum") Integer hostnum);
 }

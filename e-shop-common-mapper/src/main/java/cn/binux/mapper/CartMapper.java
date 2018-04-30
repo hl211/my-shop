@@ -2,6 +2,7 @@ package cn.binux.mapper;
 
 import cn.binux.pojo.Cart;
 import cn.binux.pojo.CartExample;
+import cn.binux.pojo.CartInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +29,7 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+
+    List<CartInfo> selectByUid(Integer userId);
+
 }

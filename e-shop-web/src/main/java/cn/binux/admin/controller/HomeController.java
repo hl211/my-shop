@@ -1,11 +1,12 @@
 package cn.binux.admin.controller;
 
 import cn.binux.admin.service.AddressService;
+import cn.binux.admin.service.CartService;
 import cn.binux.admin.service.ProductService;
 import cn.binux.admin.service.UserService;
+import cn.binux.admin.util.Result;
 import cn.binux.constant.Const;
-import cn.binux.pojo.Address;
-import cn.binux.pojo.User;
+import cn.binux.pojo.*;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +33,14 @@ public class HomeController {
     @Reference(version = Const.E_SHOP_API_VERSION)
     private ProductService productService;
 
+    @Reference(version = Const.E_SHOP_API_VERSION)
+    private CartService cartService;
+
     @RequestMapping("/")
     public String index(Model model) {
-        model.addAttribute("msg", "购物车");
+        // 显示主页,首页商品展示
+        List<Product> pager = productService.getHostProductList(6);
+        model.addAttribute("pager", pager);
         return "index";
     }
 
@@ -52,6 +59,8 @@ public class HomeController {
         } else if (password.equals(user.getPassword())) {
             request.getSession().setAttribute("userId", user.getUserId());
             request.getSession().setAttribute("userName", user.getUsername());
+            int cartCount = cartService.cartCount(user.getUserId());
+            request.getSession().setAttribute("cartCount", cartCount);
             return "登陆成功";
         }
         return "密码错误";
@@ -173,4 +182,97 @@ public class HomeController {
         return "allProduct";
     }
 
+
+    // 获取一件商品
+    @RequestMapping("/getProduct.html")
+    public String getProduct(Model model, HttpServletRequest request, HttpServletResponse response) {
+        Integer productId = 0;
+        try {
+            productId = Integer.parseInt(request.getParameter("productid"));
+        } catch (Exception e) {
+            System.out.println("商品id获取失败");
+        }
+
+        List<ProductInfo> productlist = productService.getProductOrderInfoListBy(productId);
+//        getCommentInfo(request, response);
+//        Product productInfo = leoShopDao.getSingleProductInfo(productId);
+//        request.setAttribute("product", productInfo);
+//        index(request, response);
+        model.addAttribute("product", productlist.get(0));
+        //推荐和热销商品
+        List<Product> pagers = productService.getHostProductList(6);
+        model.addAttribute("pagers", pagers);
+
+        //此商品是否在购物车
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        boolean hasThisProduct = false;
+        int cartCount = cartService.cartHaveShop(userId, productId);
+        if (cartCount > 0) {
+            hasThisProduct = true;
+        }
+        model.addAttribute("hasThisProduct", hasThisProduct);
+        return "single";
+    }
+
+    //加入购物车
+    @RequestMapping("/addProductToCart.do")
+    @ResponseBody
+    public String addProductToCart(Integer productId, Integer saleCount, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        int res = -1;
+        Result result = new Result();
+        String jsonStr = "{'cartCount':'0'}";
+        if (userId != -1) {
+            Cart cart = new Cart();
+            cart.setProductId(productId);
+            cart.setUserId(userId);
+            cart.setSaleCount(saleCount);
+            res = cartService.addCart(cart);
+            int cartCount = cartService.cartCount(userId);
+            request.getSession().setAttribute("cartCount", cartCount);
+            jsonStr = "{'cartCount':'" + cartCount + "'}";
+        }
+        if (res > 0) {
+            result.setStatus("200");
+            result.setText("添加成功");
+            result.setData(JSON.parseObject(jsonStr));
+        } else {
+            result.setStatus("204");
+            result.setText("添加失败");
+            result.setData(JSON.parseObject(jsonStr));
+        }
+        return JSON.toJSONString(result);
+    }
+
+    //加入购物车
+    @RequestMapping("/toCart.html")
+    public String ToCartPage(Model model, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            List<CartInfo> cartInfos = cartService.getCartList(userId);
+            if (cartInfos != null && cartInfos.size() > 0) {
+                model.addAttribute("cartInfos", cartInfos);
+                return "cartPage";
+            }
+        }
+        model.addAttribute("cartInfos", "false");
+        return "cartPage";
+    }
+
+    @RequestMapping("/deleteCart.do")
+    public void delCart(Integer cartId) {
+        cartService.deleteCartById(cartId);
+    }
 }
