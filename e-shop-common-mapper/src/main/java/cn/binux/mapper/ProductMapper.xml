@@ -10,6 +10,21 @@
     <result column="STORE_NUM" property="storeNum" jdbcType="INTEGER" />
     <result column="PRODUCT_STATUS" property="productStatus" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="ResultMapProductInfo" type="cn.binux.pojo.ProductInfo">
+    <id column="PRODUCT_ID" property="productId" jdbcType="INTEGER"/>
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR"/>
+    <result column="PRODUCT_PRICE" property="productPrice" jdbcType="DOUBLE"/>
+    <result column="PRODUCT_DESC" property="productDesc" jdbcType="VARCHAR"/>
+    <result column="PRODUCT_IMAGE_PATH" property="productImagePath" jdbcType="VARCHAR"/>
+    <result column="STORE_NUM" property="storeNum" jdbcType="INTEGER"/>
+    <result column="PRODUCT_STATUS" property="productStatus" jdbcType="INTEGER"/>
+    <result column="salesAmount" property="salesAmount" jdbcType="DOUBLE"/>
+    <result column="sales" property="sales" jdbcType="INTEGER"/>
+    <result column="levelStatistic" property="levelStatistic" jdbcType="DOUBLE"/>
+
+  </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -72,20 +87,30 @@
     PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_DESC, PRODUCT_IMAGE_PATH, STORE_NUM, 
     PRODUCT_STATUS
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.binux.pojo.ProductExample" >
+  <select id="selectProductByOrder" resultMap="ResultMapProductInfo">
+SELECT p.PRODUCT_ID ,PRODUCT_NAME,PRODUCT_PRICE,STORE_NUM,salesAmount,
+sales,levelStatistic,PRODUCT_IMAGE_PATH ,PRODUCT_DESC ,PRODUCT_STATUS
+FROM product p
+left join(SELECT PRODUCT_ID,(PRODUCT_PRICE*SUM(SALE_COUNT)) salesAmount,SUM(SALE_COUNT) sales,ROUND(AVG(LEVEL),2) levelStatistic
+FROM orders o left join comment c on o.ORDER_ID=c.ORDER_ID GROUP BY PRODUCT_ID) amount on p.PRODUCT_ID=amount.PRODUCT_ID;
+
+  </select>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.binux.pojo.ProductExample">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     from product
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -241,4 +266,12 @@
       PRODUCT_STATUS = #{productStatus,jdbcType=INTEGER}
     where PRODUCT_ID = #{productId,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteProductsByIds" parameterType="java.lang.String">
+    delete from product where PRODUCT_ID in
+    <foreach collection="productIds" item="item" index="no" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 </mapper>

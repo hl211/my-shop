@@ -33,7 +33,7 @@ public interface UserService {
    * 通过id修改用户
    * @param user
    */
-  void updateUserById(User user);
+  int updateUserById(User user);
 
   /**
    * 获取 会员的分页信息
@@ -72,4 +72,6 @@ public interface UserService {
   User getUserByUsername(String username);
 
   List<User> getUserPager();
+
+  List<User> getUser(String username, String truename, String phone, String address);
 }

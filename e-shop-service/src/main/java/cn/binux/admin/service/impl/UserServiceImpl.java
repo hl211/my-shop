@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public void updateUserById(User user) {
-        userMapper.updateByPrimaryKeySelective(user);
+    public int updateUserById(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
     /**
@@ -138,6 +138,25 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserPager() {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
+        return userMapper.selectByExample(example);
+    }
+
+    public List<User> getUser(String username, String truename, String phone, String address) {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        if (username != null && !username.isEmpty()) {
+            criteria.andUsernameEqualTo(username);
+        }
+        if (truename != null && !truename.isEmpty()) {
+
+            criteria.andTruenameEqualTo(truename);
+        }
+        if (phone != null && !phone.isEmpty()) {
+            criteria.andPhoneEqualTo(phone);
+        }
+        if (address != null && !address.isEmpty()) {
+            criteria.andAddressEqualTo(address);
+        }
         return userMapper.selectByExample(example);
     }
 }

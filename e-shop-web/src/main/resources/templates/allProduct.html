@@ -75,8 +75,8 @@ include("header.html")
                                 <div class="price">
                                     <div class="cart-left">
                                         <p class="title">
-                                            ${
-                                            strutil.subStringTo(data.productName,0,20)}...</p>
+                                            ${strutil.length(data.productName)>20?(
+                                            strutil.subStringTo(data.productName,0,20)):data.productName}...</p>
                                         <br/>
                                         <div class="price1">
                                             <span class="actual">￥${data.productPrice}</span>

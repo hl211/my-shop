@@ -15,6 +15,46 @@ public class Product {
 
     private Integer productStatus;
 
+
+    public Product(int productId, String productName, double productPrice, String productDesc, String productImagePath,
+                   int storeNum, int productStatus) {
+        super();
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDesc = productDesc;
+        this.productImagePath = productImagePath;
+        this.storeNum = storeNum;
+        this.productStatus = productStatus;
+    }
+
+    public Product(int productId, String productName, double productPrice, String productDesc,
+                   int storeNum, int productStatus) {
+        super();
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDesc = productDesc;
+        this.storeNum = storeNum;
+        this.productStatus = productStatus;
+    }
+
+    public Product(String productName, double productPrice, String productDesc, String productImagePath, int storeNum,
+                   int productStatus) {
+        super();
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDesc = productDesc;
+        this.productImagePath = productImagePath;
+        this.storeNum = storeNum;
+        this.productStatus = productStatus;
+    }
+
+
+    public Product() {
+        super();
+    }
+
     public Integer getProductId() {
         return productId;
     }

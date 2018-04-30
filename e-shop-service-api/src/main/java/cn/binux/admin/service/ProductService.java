@@ -1,6 +1,7 @@
 package cn.binux.admin.service;
 
 import cn.binux.pojo.Product;
+import cn.binux.pojo.ProductInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -36,4 +37,12 @@ public interface ProductService {
      * @return
      */
     List<Product> getProductList();
+
+    List<ProductInfo> getProductOrderInfoListBy();
+
+    int deleteProductsByIds(String[] productIds);
+
+    int updateProductStatus(Integer productId, Integer productStatus);
+
+    int updateProductById(Product product);
 }

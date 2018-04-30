@@ -1,8 +1,12 @@
 package cn.binux;
 
+import cn.binux.admin.service.ProductService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EShopServiceApplication.class)
@@ -15,8 +19,8 @@ public class EShopServiceApplicationTests {
 //    private MenuService menuService;
 //    @Autowired
 //    private ManagerService managerService;
-//    @Autowired
-//    private ProductService productService;
+@Autowired
+private ProductService productService;
 //
 //	@Test
 //	public void contextLoads() {
@@ -36,8 +40,9 @@ public class EShopServiceApplicationTests {
 //        System.out.println(managerService.addManager(m));
 //    }
 //
-//    @Test
-//    public void product() {
-//        System.out.println(productService.getProductList(1, 8));
-//    }
+@Test
+public void product() {
+    System.out.println(productService.getProductList(1, 8));
+    System.out.println(productService.getProductOrderInfoListBy());
+}
 }

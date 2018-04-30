@@ -5,6 +5,7 @@ import cn.binux.constant.Const;
 import cn.binux.mapper.ProductMapper;
 import cn.binux.pojo.Product;
 import cn.binux.pojo.ProductExample;
+import cn.binux.pojo.ProductInfo;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Product getProduct(Integer productId) {
-        return null;
+        return productMapper.selectByPrimaryKey(productId);
     }
 
     /**
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public void addProduct(Product product) {
-
+        productMapper.insertSelective(product);
     }
 
     /**
@@ -60,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(currPage, pageSize);
         ProductExample example = new ProductExample();
         ProductExample.Criteria criteria = example.createCriteria();
+        criteria.andProductStatusEqualTo(1);
         //criteria.();
         List<Product> list = productMapper.selectByExample(example);
         //System.out.println(list.size());
@@ -80,5 +82,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductList() {
         return null;
+    }
+
+    @Override
+    public List<ProductInfo> getProductOrderInfoListBy() {
+        return productMapper.selectProductByOrder();
+    }
+
+    @Override
+    public int deleteProductsByIds(String[] productIds) {
+        return productMapper.deleteProductsByIds(productIds);
+    }
+
+    @Override
+    public int updateProductStatus(Integer productId, Integer productStatus) {
+        Product p = new Product();
+        p.setProductId(productId);
+        p.setProductStatus(productStatus);
+        return productMapper.updateByPrimaryKeySelective(p);
+    }
+
+    @Override
+    public int updateProductById(Product product) {
+        return productMapper.updateByPrimaryKeySelective(product);
     }
 }

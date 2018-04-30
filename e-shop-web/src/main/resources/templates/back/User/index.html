@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="tableBody">
-    <form id="queryUserForm" class="form-inline definewidth m20" action="queryUsers" method="post">
+    <form id="queryUserForm" class="form-inline definewidth m20" action="queryUsers.html" method="post">
         &nbsp;&nbsp;&nbsp;&nbsp; 用户名称：
         <input type="text" name="username" id="username" class="CriteriaUser abc input-default"
                placeholder="">&nbsp;&nbsp;
@@ -156,6 +156,9 @@
             return false;
         });
 
+        $("#resetQuery").click(function () {
+            $("input:text").val("");
+        });
     })
 </script>
 </html>
