@@ -83,6 +83,10 @@
                 {
                     title: '成交时间',
                     field: 'orderTime',
+                    formatter: function operateFormatter(value, row, index) {
+                        var crtTime = new Date(value);
+                        return crtTime.toLocaleDateString();
+                    }
                 },
                 {
                     title: '会员账户',

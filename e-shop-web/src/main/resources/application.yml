@@ -36,11 +36,13 @@ spring:
   mvc:
     view:
       suffix: .html
+  http:
+    multipart:
+      max-request-size: 100Mb
+      maxFileSize: 100Mb
 
 server:
   port: 80
-
-
 
 ##上传文件的缓存路径
 #tempDirectory: D\:\\tempDirectory

@@ -34,7 +34,7 @@ import static cn.binux.admin.util.FileUtils.saveFile;
  */
 
 @Controller
-@RequestMapping("back")
+@RequestMapping("back/")
 public class AdminController {
 
     @Reference(version = Const.E_SHOP_API_VERSION)
