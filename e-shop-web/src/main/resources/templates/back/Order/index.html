@@ -114,6 +114,20 @@
                     {
                         title: '订单状态',
                         field: 'orderStatus',
+                        formatter: function operateFormatter(value, row, index) {
+                            if (value == 0) {
+                                return "已下单"
+                            }
+                            else if (value == 1) {
+                                return "已付款";
+                            }
+                            else if (value == 2) {
+                                return "已发货";
+                            }
+                            else {
+                                return "已完成";
+                            }
+                        }
                     },
                     {
                         title: '成交总价',

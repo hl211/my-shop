@@ -1,249 +1,138 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Shop_我的订单</title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../Css/style.css"/>
+    <link rel="stylesheet" href="../plugins/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../plugins/bootstrap/bootstrap.min.css">
     <style type="text/css">
-        .mycar-index {
-            margin: 0 auto;
-            width: 1200px;
+        body {
+            padding-bottom: 40px;
         }
 
-        #cart-wrapper {
-            width: 1200px;
-            /* height:330px; */
+        .sidebar-nav {
+            padding: 9px 0;
         }
 
-        #cart-wrapper table {
-            width: 1200px;
-            border-left: 1px solid #f5f5f5;
-            border-right: 1px solid #f5f5f5;
-        }
-
-        #cart-wrapper table th {
-            background: #f5f5f5;
-            height: 30px;
-            text-align: center;
-        }
-
-        #cart-wrapper table td {
-            border-bottom: 1px solid #f5f5f5;
-            color: #333;
-            height: 70px;
-            font-size: 14px;
-        }
-
-        #page {
-            color: #333;
-            font-size: 14px;
-        }
-
-        a:LINK {
-            text-decoration: none;
-            color: #555;
-        }
-
-        a:hover {
-            text-decoration: none;
-            cursor: pointer;
-            background: #4CB1CA;
-        }
-
-        a:VISITED {
-            text-decoration: none;
-            color: #555;
-        }
-
-        .order-blank {
-            height: 100px;
-            line-height: 100px;
-            font-size: 16px;
-            text-align: center;
-            width: 100%;
-            margin: 30px 0px;
-        }
-
-        img {
-            float: left;
-            display: block;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            margin-top: 2px;
-            margin-left: 10px;
-        }
-
-        .pname {
-            float: left;
-            width: 310px;
-            margin-top: 20px;
-            margin-left: 10px;
-            text-algin: left;
+        @media ( max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="mycar-index">
-    <%if (addressList!="false"){%>
-
-    <div id="cart-wrapper">
-        <table cellspacing="1.5">
-            <thead>
-            <tr>
-                <th width="100px">订单编号</th>
-                <th width="400px">商品名称</th>
-                <th width="125px">商品单价</th>
-                <th width="125px">数量</th>
-                <th width="125px">订单合计</th>
-                <th width="150px">备注</th>
-                <th width="175px">操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for(order in addressList. ){%>
-            <c:forEach items="${ordermsg}" var="order">
-                <c:if test="${fn:length(order.product)==1}">
-                    <tr>
-                        <td align="center">
-                            ${order.orderNum}
-                        </td>
-                        <c:forEach items="${order.product}" var="product">
-                            <td align="left">
-                                <a target="_blank" href="getProduct.do?productid=${product.productId }">
-                                    <img src="${product.productImagePath }"></a>
-                                <div class="pname"><a target="_blank"
-                                                      href="getProduct.do?productid=${product.productId }">${product.productName}</a>
-                                </div>
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                            <td align="center">
-                                ${product.saleCount}
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice*product.saleCount}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                        </c:forEach>
-                        <td align="center">
-                            <c:if test="${!(empty order.note)}">${order.note}</c:if>
-                            <c:if test="${empty order.note}">无</c:if>
-                        </td>
-                        <td align="center"><a href="deleteOrderById.do?orderNum=${order.orderNum}"
-                                              onclick="return confirm('您确定删除吗？');">删除订单</a><br/>
-                            <c:if test="${order.orderStatus==0}"><a target="_blank"
-                                                                    href="payment.do?orderNum=${order.orderNum}"><font
-                                    color="red">去付款</font></a></c:if>
-                            <c:if test="${order.orderStatus==1}">待发货</c:if>
-                            <c:if test="${order.orderStatus==2}"><a
-                                    href="receiveProduct.do?orderNum=${order.orderNum}"><font
-                                    color="red">确认收货</font></a></c:if>
-                            <c:if test="${order.orderStatus==3}">
-                                <c:if test="${order.level==0}"><a
-                                        onclick="window.parent.location.href='comment.jsp?orderNum=${order.orderNum}'"><font
-                                        color="red">去评价</font></a></c:if>
-                                <c:if test="${order.level!=0}">已完成<br/><a
-                                        onclick="window.parent.location.href='comment.jsp?orderNum=${order.orderNum}'"><font
-                                        color="red">查看评价</font></a></c:if>
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:if>
-                <c:if test="${fn:length(order.product)!=1}">
-                    <tr>
-                        <td align="center" rowspan="${fn:length(order.product)}">
-                            ${order.orderNum}
-                        </td>
-                        <c:forEach items="${order.product}" var="product" begin="0" end="0">
-                            <td align="left">
-                                <a target="_blank" href="getProduct.do?productid=${product.productId }">
-                                    <img src="${product.productImagePath }"></a>
-                                <div class="pname"><a target="_blank"
-                                                      href="getProduct.do?productid=${product.productId }">${product.productName}</a>
-                                </div>
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                            <td align="center">
-                                ${product.saleCount}
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice*product.saleCount}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                            <td align="center" rowspan="${fn:length(order.product)}">
-                                <c:if test="${!(empty order.note)}">${order.note}</c:if>
-                                <c:if test="${empty order.note}">无</c:if>
-                            </td>
-                            <td align="center" rowspan="${fn:length(order.product)}"><a
-                                    href="deleteOrderById.do?orderNum=${order.orderNum}"
-                                    onclick="return confirm('您确定删除吗？');">删除订单</a><br/>
-                                <c:if test="${order.orderStatus==0}"><a target="_blank"
-                                                                        href="payment.do?orderNum=${order.orderNum}"><font
-                                        color="red">去付款</font></a></c:if>
-                                <c:if test="${order.orderStatus==1}">待发货</c:if>
-                                <c:if test="${order.orderStatus==2}"><a
-                                        href="receiveProduct.do?orderNum=${order.orderNum}"><font
-                                        color="red">确认收货</font></a>
-                                </c:if>
-                                <c:if test="${order.orderStatus==3}">
-                                    <c:if test="${order.level==0}"><a
-                                            onclick="window.parent.location.href='comment.jsp?orderNum=${order.orderNum}'"><font
-                                            color="red">去评价</font></a></c:if>
-                                    <c:if test="${order.level!=0}">已完成<br/><a
-                                            onclick="window.parent.location.href='comment.jsp?orderNum=${order.orderNum}'"><font
-                                            color="red">查看评价</font></a></c:if>
-                                </c:if>
-                            </td>
-                        </c:forEach>
-                    </tr>
-                    <c:forEach items="${order.product}" var="product" begin="1"
-                               end="${fn:length(order.product)-1}">
-                        <tr>
-                            <td align="left">
-                                <a target="_blank" href="getProduct.do?productid=${product.productId }">
-                                    <img src="${product.productImagePath }"></a>
-                                <div class="pname"><a target="_blank"
-                                                      href="getProduct.do?productid=${product.productId }">${product.productName}</a>
-                                </div>
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                            <td align="center">
-                                ${product.saleCount}
-                            </td>
-                            <td align="center">
-                                ￥
-                                <fmt:formatNumber value="${product.productPrice*product.saleCount}"
-                                                  maxFractionDigits="2"></fmt:formatNumber>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-            </c:forEach>
-            </tbody>
-        </table>
+<div class="tableBody">
+    <%if (orderList!="false"){%>
+    <div class="definewidth">
+        <table id="mytab" class="table table-hover"></table>
     </div>
-
-    <%}else {%>
+    <%}else{%>
     <div class="order-blank">
-        您还没有订单信息，赶快<a onclick="window.parent.location.href='allProduct.html'"><font color="#555">去挑选心爱的商品</font></a>吧！
+        您还没有订单信息，赶快<span color="#555">添加</span>吧！
     </div>
     <%}%>
 </div>
-<br/>
+
 </body>
+
+<!--bootstrap.min.js and jquery" > -->
+<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/bootstrap/bootstrap.min.js"></script>
+<!--table-->
+<script src="../plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+<!--table export-->
+<script src="../plugins/bootstrap-table/bootstrap-table-export.js"></script>
+<script src="../plugins/bootstrap-table/tableExport.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //生成用户数据
+        $('#mytab').bootstrapTable({
+            striped: true, //是否显示行间隔色
+            dataField: "res",
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pagination: true, //是否分页
+            queryParamsType: 'limit',
+            sidePagination: 'client',
+            pageSize: 5, //单页记录数
+            // pageList: [5, 10], //分页步进值
+            showColumns: false,
+            showToggle: false,      //是否显示详细视图和列表视图的切换按钮
+            cardView: false,       //是否显示详细视图
+            clickToSelect: false, //是否启用点击选中行
+            showExport: false,  //是否显示导出
+            toolbarAlign: 'right',
+            buttonsAlign: 'left', //按钮对齐方式
+            columns: [
+                {
+                    title: '序号',
+                    field: 'xindex',
+                    formatter: function operateFormatter(value, row, index) {
+                        return index + 1;
+                    }
+                },
+                {
+                    title: '订单编号',
+                    field: 'orderNum',
+                },
+                {
+                    title: '成交时间',
+                    field: 'orderTime',
+                },
+                {
+                    title: '会员账户',
+                    field: 'productName',
+
+                },
+                {
+                    title: '订单状态',
+                    field: 'orderStatus',
+                    formatter: function operateFormatter(value, row, index) {
+                        if (value == 0) {
+                            return "已下单"
+                        }
+                        else if (value == 1) {
+                            return "已付款";
+                        }
+                        else if (value == 2) {
+                            return "已发货";
+                        }
+                        else {
+                            return "已完成";
+                        }
+                    }
+                },
+                {
+                    title: '成交总价',
+                    field: 'productPrice',
+                },
+                {
+                    title: '商品数',
+                    field: 'saleCount',
+                },
+                {
+                    title: '送货信息',
+                    field: 'sendPlace',
+                },
+                {
+                    title: '送货号码',
+                    field: 'sendPhone',
+                },
+                {
+                    title: '送货联系人',
+                    field: 'sendMan',
+                },
+            ],
+            data: ${orderList},
+            locale: 'zh-CN', //中文支持,
+
+        });
+
+    })
+</script>
 </html>

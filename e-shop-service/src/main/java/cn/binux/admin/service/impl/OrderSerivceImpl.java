@@ -126,6 +126,7 @@ public class OrderSerivceImpl implements OrderService {
         return ordersMapper.selectByOrderList();
     }
 
+
     @Override
     public void delOrder(String[] orders) {
         for (String order : orders) {
@@ -135,10 +136,7 @@ public class OrderSerivceImpl implements OrderService {
 
     @Override
     public List<Orders> getOrderList(Integer userId) {
-        OrdersExample example = new OrdersExample();
-        OrdersExample.Criteria criteria = example.createCriteria();
-        criteria.andUserIdEqualTo(userId);
-        return ordersMapper.selectByExample(example);
+        return ordersMapper.selectByOrderandUserIdList(userId);
     }
     ;
 }

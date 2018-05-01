@@ -365,4 +365,16 @@
  where ORDER_NUM=#{orderNum,jdbcType=VARCHAR}
   </select>
 
+
+  <select id="selectByOrderandUserIdList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select ORDER_NUM,ORDER_TIME,USERNAME PRODUCT_NAME, ORDER_STATUS,
+    sum(PRODUCT_PRICE*SALE_COUNT) PRODUCT_PRICE,
+    SUM(SALE_COUNT)SALE_COUNT,SEND_PLACE,SEND_PHONE,SEND_MAN
+    from orders o left join user u on o.USER_ID=u.USER_ID
+    where VISIBLE=1
+    <if test="userId != null">
+      AND o.USER_ID= #{userId,jdbcType=INTEGER}
+    </if>
+    GROUP BY ORDER_NUM ORDER BY ORDER_TIME DESC;
+  </select>
 </mapper>

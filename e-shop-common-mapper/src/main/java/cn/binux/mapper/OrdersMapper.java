@@ -33,4 +33,6 @@ public interface OrdersMapper {
 
     void deleOrdersByOrderNum(@Param("orderNum") String orderNum);
 
+    List<Orders> selectByOrderandUserIdList(@Param("userId") Integer userId);
+
 }
