@@ -31,7 +31,10 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public List<Cart> getCartForList(Integer userId) {
-        return null;
+        CartExample example = new CartExample();
+        CartExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        return cartMapper.selectByExample(example);
     }
 
     /**
@@ -41,7 +44,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public void updateCart(Cart cart) {
-
+        cartMapper.updateByPrimaryKeySelective(cart);
     }
 
     /**

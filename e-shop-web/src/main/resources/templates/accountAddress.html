@@ -93,7 +93,7 @@
                     field: 'opration',
                     formatter: function operateFormatter(value, row, index) {
                         var html = '<a href="editAddress.html?addressId=' + row.addressId
-                            + '"class="editAddress">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="deleteAddressById" href="deleteAddressById?addressId='
+                            + '"class="editAddress">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="deleteAddressById" href="deleteAddressById.do?addressId='
                             + row.addressId + '">删除</a>';
 
                         return html;

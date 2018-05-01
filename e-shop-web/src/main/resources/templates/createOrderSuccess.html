@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>成功提交订单</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" href="home/css/cart.css" type="text/css">
+    <link rel="stylesheet" href="home/css/buyleo.css" type="text/css">
+
+    <link href="home/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="home/js/jquery1.min.js"></script>
+    <!-- start menu -->
+    <link href="home/css/megamenu.css" rel="stylesheet" type="text/css"
+          media="all"/>
+    <script type="text/javascript" src="home/js/megamenu.js"></script>
+
+    <!-- dropdown -->
+    <script src="home/js/jquery.easydropdown.js"></script>
+</head>
+<body>
+<!--头部部分-->
+<%
+include("header.html")
+{
+}
+%>
+<div class="encircle">
+    <img src="home/images/jstj.jpg" alt="结算提交凭证正确对号图片">
+    <div class="checkout_order_right">
+        <h1>
+            恭喜，订单提交成功，已付款了！<span>应付金额：<i>${totalPrice}</i></span>
+        </h1>
+        <div class="checkout_order_summary">
+        </div>
+        <div class="checkout_order_intro">
+            <div class="checkout_order_same">
+                <p>订单编号：</p>
+                <span>${orderNum }</span>
+            </div>
+            <div class="checkout_order_same">
+                <p>收货信息：</p>
+                <i>${address.sendMan }</i> <i>${address.sendPhone }</i> <i>${address.sendPlace
+                }</i>
+            </div>
+
+            <div class="checkout_order_tools ">
+                <a class="go_pay" href="allProduct.html" target="_self">已付款</a>
+                <a href="allProduct.html" class="go_continue">继续购物</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--正文结束-->
+<br/><br/><br/><br/><br/><br/>
+<!--底部部分-->
+<%
+include("footer.html")
+{
+}
+%>
+</body>
+</html>

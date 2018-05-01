@@ -80,7 +80,7 @@ public class OrderSerivceImpl implements OrderService {
      */
     @Override
     public int addOrders(Orders order) {
-        return 0;
+        return ordersMapper.insertSelective(order);
     }
 
     /**

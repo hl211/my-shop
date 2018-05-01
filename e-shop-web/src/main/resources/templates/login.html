@@ -34,8 +34,11 @@
                 var json = {"username": username, "password": password};
                 var url = "login.do";
                 $.post(url, json, function (data) {
-                    alert(data)
-                    window.location.href = "/";
+                    alert(data.text);
+                    if (data.status == "200") {
+                        window.location.href = "allProduct.html";
+                    }
+
                     // var logStatus = (data[0].logStatus == "true");
                     // $("#errorMsg").text("");
                     // if (logStatus) {
@@ -43,7 +46,7 @@
                     // } else {
                     //     $("#errorMsg").text("用户名或密码错误");
                     // }
-                });
+                }, 'json');
                 return false;
             });
         });

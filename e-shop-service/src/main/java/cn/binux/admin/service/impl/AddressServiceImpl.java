@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
      */
     @Override
     public void deleteAddressById(Integer addressId) {
-
+        addressMapper.deleteByPrimaryKey(addressId);
     }
 
     /**
@@ -63,7 +63,8 @@ public class AddressServiceImpl implements AddressService {
      */
     @Override
     public int addAddress(Address address) {
-        return 0;
+        addressMapper.insertSelective(address);
+        return address.getAddressId();
     }
 
     /**

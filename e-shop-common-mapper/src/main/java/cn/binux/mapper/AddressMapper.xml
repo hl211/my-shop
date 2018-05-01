@@ -105,7 +105,8 @@
     values (#{addressId,jdbcType=INTEGER}, #{sendPlace,jdbcType=VARCHAR}, #{sendMan,jdbcType=VARCHAR}, 
       #{sendPhone,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.binux.pojo.Address" >
+  <insert id="insertSelective" parameterType="cn.binux.pojo.Address" useGeneratedKeys="true" keyProperty="addressId"
+          keyColumn="ADDRESS_ID">
     insert into address
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="addressId != null" >

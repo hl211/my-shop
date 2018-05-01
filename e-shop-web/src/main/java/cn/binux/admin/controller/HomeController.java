@@ -1,9 +1,6 @@
 package cn.binux.admin.controller;
 
-import cn.binux.admin.service.AddressService;
-import cn.binux.admin.service.CartService;
-import cn.binux.admin.service.ProductService;
-import cn.binux.admin.service.UserService;
+import cn.binux.admin.service.*;
 import cn.binux.admin.util.Result;
 import cn.binux.constant.Const;
 import cn.binux.pojo.*;
@@ -18,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 public class HomeController {
@@ -35,6 +34,8 @@ public class HomeController {
 
     @Reference(version = Const.E_SHOP_API_VERSION)
     private CartService cartService;
+    @Reference(version = Const.E_SHOP_API_VERSION)
+    private OrderService orderService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -54,16 +55,24 @@ public class HomeController {
     @ResponseBody
     public String login(String username, String password, HttpServletRequest request) {
         User user = userService.getUserByUsername(username);
+        Result result = new Result();
         if (user == null) {
-            return "用户不存在";
+            result.setStatus("204");
+            result.setText("用户不存在");
+            return JSON.toJSONString(result);
         } else if (password.equals(user.getPassword())) {
             request.getSession().setAttribute("userId", user.getUserId());
             request.getSession().setAttribute("userName", user.getUsername());
             int cartCount = cartService.cartCount(user.getUserId());
             request.getSession().setAttribute("cartCount", cartCount);
-            return "登陆成功";
+            result.setStatus("200");
+            result.setText("登陆成功");
+            return JSON.toJSONString(result);
         }
-        return "密码错误";
+        result.setStatus("204");
+        result.setText("密码错误");
+        return JSON.toJSONString(result);
+
     }
 
     @RequestMapping("/logout.do")
@@ -154,11 +163,12 @@ public class HomeController {
         return "login";
     }
 
-    @RequestMapping("deleteAddressById")
-    public void deleteAddress(Integer addressId) {
+    @RequestMapping("deleteAddressById.do")
+    public String deleteAddress(Integer addressId, Model model, HttpServletRequest request) {
         if (addressId != null) {
             addressService.deleteAddressById(addressId);
         }
+        return getAddress(model, request);
     }
 
     @RequestMapping("editAddress.html")
@@ -273,12 +283,12 @@ public class HomeController {
 
     @RequestMapping("/deleteCart.do")
     public void delCart(Integer cartId, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
         if (cartId == 0) {
-            int userId = -1;
-            Object object = request.getSession().getAttribute("userId");
-            if (object != null) {
-                userId = Integer.parseInt(object.toString());
-            }
             List<CartInfo> cartInfos = cartService.getCartList(userId);
             for (CartInfo item : cartInfos) {
                 cartService.deleteCartById(item.getCartId());
@@ -286,5 +296,139 @@ public class HomeController {
         } else {
             cartService.deleteCartById(cartId);
         }
+        int cartCount = cartService.cartCount(userId);
+        request.getSession().setAttribute("cartCount", cartCount);
+    }
+
+    @RequestMapping("/alterSaleCount.do")
+    public void alterSaleCount(Integer cartId, Integer saleCount) {
+        Cart cart = new Cart();
+        cart.setCartId(cartId);
+        cart.setSaleCount(saleCount);
+        cartService.updateCart(cart);
+    }
+
+    @RequestMapping("/buyleo.do")
+    public String buyshop(Model model, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            //商品
+            List<CartInfo> cartInfos = cartService.getCartList(userId);
+            if (cartInfos != null && cartInfos.size() > 0) {
+                model.addAttribute("cartInfos", cartInfos);
+            }
+            //地址
+            List<Address> addressList = addressService.getAddressByUserId(userId);
+            model.addAttribute("addressList", addressList);
+        }
+        return "buyleo";
+    }
+
+    @RequestMapping("/createAddress.html")
+    public String toaddAddress() {
+        return "createAddress";
+    }
+
+    @RequestMapping("/addAddr.do")
+    public String addAddress(String sendphone, String sendman, String sendplace, Model model, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            Address address = new Address();
+            address.setSendMan(sendman);
+            address.setSendPhone(sendphone);
+            address.setSendPlace(sendplace);
+            address.setUserId(userId);
+            addressService.addAddress(address);
+            return getAddress(model, request);
+        }
+        return "login";
+    }
+
+    @RequestMapping("/addAddr2.do")
+    @ResponseBody
+    public String addAddressincart(String sendphone, String sendman, String sendplace, Model model, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            Result result = new Result();
+            Address address = new Address();
+            address.setSendMan(sendman);
+            address.setSendPhone(sendphone);
+            address.setSendPlace(sendplace);
+            address.setUserId(userId);
+            Integer id = addressService.addAddress(address);
+            result.setData(id);
+            return JSON.toJSONString(result);
+        }
+        return "login";
+    }
+
+
+    @RequestMapping("confirmOrder.do")
+    public String confirmOrder(Model model, Integer addressId, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            //获取地址
+            Address address = addressService.getAddressById(addressId);
+            //获取
+            List<Cart> productList = cartService.getCartForList(userId);
+            //
+            Random random = new Random();
+            String ran = random.nextInt(10) * 1000 + random.nextInt(10) * 100 + random.nextInt(10) * 10 + random.nextInt(10) + "";
+            String orderNum = System.currentTimeMillis() + ran + userId;
+            Timestamp orderTime = new Timestamp(System.currentTimeMillis());
+            double totalPrice = 0;
+            for (Cart cart : productList) {
+                Product product = productService.getProduct(cart.getProductId());
+                //
+                Orders orders = new Orders();
+                orders.setOrderNum(orderNum);
+                orders.setOrderTime(orderTime);
+                orders.setOrderStatus(2);
+                orders.setNote("");
+                orders.setUserId(userId);
+                orders.setSendPlace(address.getSendPlace());
+                orders.setSendMan(address.getSendMan());
+                orders.setSendPhone(address.getSendPhone());
+                orders.setProductId(product.getProductId());
+                orders.setProductName(product.getProductName());
+                orders.setProductPrice(product.getProductPrice());
+                orders.setSaleCount(cart.getSaleCount());
+                orders.setVisible(1);
+                orderService.addOrders(orders);
+                totalPrice += product.getProductPrice() * cart.getSaleCount();
+                cartService.deleteCartById(cart.getCartId());
+            }
+
+            model.addAttribute("address", address);
+            model.addAttribute("orderNum", orderNum);
+            model.addAttribute("totalPrice", totalPrice);
+            request.getSession().setAttribute("cartCount", 0);
+            return "createOrderSuccess";
+        }
+        return "login";
+    }
+
+    @RequestMapping("/buyNow.do")
+    public String buyNow(Model model, Integer productId, Integer number, HttpServletRequest request) {
+        addProductToCart(productId, number, request);
+        return buyshop(model, request);
     }
 }
+
+

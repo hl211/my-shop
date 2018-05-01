@@ -6,6 +6,7 @@ public class CartInfo {
     private Integer productId;
 
     private Integer saleCount;
+    private Integer storeNum;
 
     private Integer userId;
 
@@ -14,6 +15,14 @@ public class CartInfo {
     private Double productPrice;
 
     private String productImagePath;
+
+    public Integer getStoreNum() {
+        return storeNum;
+    }
+
+    public void setStoreNum(Integer storeNum) {
+        this.storeNum = storeNum;
+    }
 
     public Integer getCartId() {
         return cartId;
