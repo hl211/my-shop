@@ -73,4 +73,7 @@ public interface ManagerService {
 
     void addManagerOrRole(Manager manager, Integer roleId);
 
+    void editpasswd(Manager manager);
+
+
 }

@@ -52,10 +52,14 @@ public class AdminController {
     @Reference(version = Const.E_SHOP_API_VERSION)
     private OrderService orderService;
 
+    @RequestMapping("/")
+    public String toindex() {
+
+        return "back/login";
+    }
 
     @RequestMapping("/index")
     public String index() {
-
         return "back/login";
     }
 
@@ -102,13 +106,28 @@ public class AdminController {
         return "back/login";
     }
 
+    // 转到修改密码页面
+    @RequestMapping("/Admin/editpasswd.html")
+    public String toeditpasswd(Model model) throws IOException {
+        return "back/Admin/editpasswd";
+    }
+
+
+    @RequestMapping("/Admin/editPassword.bg")
+    @ResponseBody
+    public String editpasswd(Model model, Integer managerId, String managerPassword) throws IOException {
+        Manager m = new Manager();
+        m.setManagerId(managerId);
+        m.setManagerPassword(managerPassword);
+        managerService.editpasswd(m);
+        return "修改成功请重新登陆";
+    }
 
     // 获取所有的管理员账户
     @RequestMapping("/Admin/getManagers.html")
     public String getManagers(Model model) throws IOException {
         List<Manager> managers = managerService.getManagers();
         model.addAttribute("managers", JSON.toJSONString(managers));
-        System.out.println("---------------------------------------------------------");
         return "back/Admin/index";
     }
 

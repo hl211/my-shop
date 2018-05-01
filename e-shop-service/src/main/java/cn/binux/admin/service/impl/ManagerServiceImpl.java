@@ -158,4 +158,9 @@ public class ManagerServiceImpl implements ManagerService {
         managerRoleMapper.insertSelective(managerRole);
 
     }
+
+    @Override
+    public void editpasswd(Manager manager) {
+        managerMapper.updateByPrimaryKeySelective(manager);
+    }
 }
