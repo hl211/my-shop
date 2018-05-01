@@ -485,7 +485,13 @@ public class AdminController {
                         + uploadFileName.substring(uploadFileName
                         .lastIndexOf("."));
                 File path = new File(ResourceUtils.getURL("classpath:").getPath());
+                if (!path.exists()) {
+                    path = new File("");
+                }
                 File upload = new File(path.getAbsolutePath(), "static/home/upload/");
+                if (!upload.exists()) {
+                    upload.mkdirs();
+                }
                 String filePath = upload.getPath()
                         + java.io.File.separator + fileName;
                 InputStream inputStream = item.getInputStream();
