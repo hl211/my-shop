@@ -115,7 +115,7 @@
                         title: '商品图片',
                         field: 'productImagePath',
                         formatter: function operateFormatter(value, row, index) {
-                            html = '<a class="nohref" target="_blank" href="/getProduct.do?productid=' + row.productId + '" ><img src = "../../home/' + row.productImagePath + '"style = "cursor: pointer;height: 80px;width: 80px"> </a>'
+                            html = '<a class="nohref" target="_blank" href="/getProduct.html?productid=' + row.productId + '" ><img src = "../../home/' + row.productImagePath + '"style = "cursor: pointer;height: 80px;width: 80px"> </a>'
                             return html;
                         }
 
