@@ -252,7 +252,7 @@ public class HomeController {
         return JSON.toJSONString(result);
     }
 
-    //加入购物车
+    //去购物车
     @RequestMapping("/toCart.html")
     public String ToCartPage(Model model, HttpServletRequest request) {
         int userId = -1;
@@ -272,7 +272,19 @@ public class HomeController {
     }
 
     @RequestMapping("/deleteCart.do")
-    public void delCart(Integer cartId) {
-        cartService.deleteCartById(cartId);
+    public void delCart(Integer cartId, HttpServletRequest request) {
+        if (cartId == 0) {
+            int userId = -1;
+            Object object = request.getSession().getAttribute("userId");
+            if (object != null) {
+                userId = Integer.parseInt(object.toString());
+            }
+            List<CartInfo> cartInfos = cartService.getCartList(userId);
+            for (CartInfo item : cartInfos) {
+                cartService.deleteCartById(item.getCartId());
+            }
+        } else {
+            cartService.deleteCartById(cartId);
+        }
     }
 }
