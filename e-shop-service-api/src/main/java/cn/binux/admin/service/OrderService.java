@@ -83,4 +83,6 @@ public interface OrderService {
     List<Orders> getOrderList();
 
     void delOrder(String[] orders);
+
+    List<Orders> getOrderList(Integer userId);
 }

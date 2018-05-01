@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -41,8 +40,15 @@ public class HomeController {
     public String index(Model model) {
         // 显示主页,首页商品展示
         List<Product> pager = productService.getHostProductList(6);
-        model.addAttribute("pager", pager);
+        model.addAttribute("productList", pager);
         return "index";
+    }
+
+    @RequestMapping("/index.html")
+    public String toindex(Model model) {
+        // 显示主页,首页商品展示
+
+        return index(model);
     }
 
     @RequestMapping("/login.html")
@@ -429,6 +435,51 @@ public class HomeController {
         addProductToCart(productId, number, request);
         return buyshop(model, request);
     }
+
+    @RequestMapping("/getOrderMsgs.do")
+    public String getOrderMsgs(Model model, HttpServletRequest request) {
+        int userId = -1;
+        Object object = request.getSession().getAttribute("userId");
+        if (object != null) {
+            userId = Integer.parseInt(object.toString());
+        }
+        if (userId != -1) {
+            //获取订单
+            List<Orders> ordersList = orderService.getOrderList(userId);
+            if (ordersList != null && ordersList.size() > 0) {
+                Map<String, List<ProductInfo>> map = new HashMap<>();
+                String ordernum;
+                for (Orders order : ordersList) {
+                    ProductInfo productInfo = new ProductInfo();
+                    ordernum = order.getOrderNum();
+                    Product p = productService.getProduct(order.getProductId());
+                    productInfo.setProductImagePath(p.getProductImagePath());
+                    productInfo.setProductPrice(order.getProductId());
+                    productInfo.setProductName(order.getProductName());
+                    productInfo.setProductPrice(order.getProductPrice());
+                    productInfo.setSales(new BigDecimal(order.getSaleCount()));
+                    productInfo.setProductStatus(order.getOrderStatus());
+                    productInfo.setSalesAmount(order.getProductPrice() * order.getSaleCount());
+                    if (map.get(ordernum) == null) {
+                        List<ProductInfo> list = new ArrayList<>();
+                        list.add(productInfo);
+                        map.put(ordernum, list);
+                    } else {
+                        List<ProductInfo> list = map.get(ordernum);
+                        list.add(productInfo);
+                    }
+                }
+                System.out.println(JSON.toJSONString(map));
+                model.addAttribute("orderList", JSON.toJSONString(map));
+            } else {
+                model.addAttribute("orderList", "false");
+            }
+            return "accountOrder";
+        }
+        return "login";
+
+    }
+
 }
 
 

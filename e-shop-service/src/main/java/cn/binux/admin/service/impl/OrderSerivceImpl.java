@@ -133,5 +133,12 @@ public class OrderSerivceImpl implements OrderService {
         }
     }
 
+    @Override
+    public List<Orders> getOrderList(Integer userId) {
+        OrdersExample example = new OrdersExample();
+        OrdersExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        return ordersMapper.selectByExample(example);
+    }
     ;
 }
