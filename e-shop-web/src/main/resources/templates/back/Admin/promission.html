@@ -91,11 +91,18 @@
                     formatter: function operateFormatter(value, row, index) {
                         if (value == 1) {
                             return '<input type="radio" value="1" name="promission-' + row.managerRoleId + '" checked="checked" onclick="changePromission(this)">超级管理员&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<input type="radio" value="2" name="promission-' + row.managerRoleId + '" onclick="changePromission(this)">业务管理员';
+                                '<input type="radio" value="2" name="promission-' + row.managerRoleId + '" onclick="changePromission(this)">业务管理员' +
+                                '<input type="radio" value="3" name="promission-' + row.managerRoleId + '" onclick="changePromission(this)">业务查看员';
                         }
                         else if (value == 2) {
                             return '<input type="radio" value="1" name="promission-' + row.managerRoleId + '"  onclick="changePromission(this)">超级管理员&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<input type="radio" value="2" name="promission-' + row.managerRoleId + '" checked="checked" onclick="changePromission(this)">业务管理员';
+                                '<input type="radio" value="2" name="promission-' + row.managerRoleId + '" checked="checked" onclick="changePromission(this)">业务管理员' +
+                                '<input type="radio" value="3" name="promission-' + row.managerRoleId + '" onclick="changePromission(this)">业务查看员';
+                        }
+                        else if (value == 3) {
+                            return '<input type="radio" value="1" name="promission-' + row.managerRoleId + '"  onclick="changePromission(this)">超级管理员&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                '<input type="radio" value="2" name="promission-' + row.managerRoleId + '" onclick="changePromission(this)">业务管理员' +
+                                '<input type="radio" value="3" name="promission-' + row.managerRoleId + '"checked="checked" onclick="changePromission(this)">业务查看员';
                         }
                         return "数据错误";
                     }

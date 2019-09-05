@@ -51,6 +51,8 @@ public class AdminController {
 
     @Reference(version = Const.E_SHOP_API_VERSION)
     private OrderService orderService;
+    @Reference(version = Const.E_SHOP_API_VERSION)
+    private NotifyService notifyService;
 
     @RequestMapping("/")
     public String toindex() {
@@ -271,6 +273,91 @@ public class AdminController {
     }
 
 
+    //notify首页
+    @RequestMapping("/notify/index.html")
+    public String togetnotify(Model model) {
+        List<Notify> notify = notifyService.getNotifyPager();
+        model.addAttribute("notify", JSON.toJSONString(notify));
+        return "back/notify/index";
+    }
+
+    //notify首页
+    @RequestMapping("/notify/index1.html")
+    public String togetnotify1(Model model) {
+        List<Notify> notify = notifyService.getNotifyPager();
+        model.addAttribute("notify", JSON.toJSONString(notify));
+        return "back/notify/index1";
+    }
+
+
+    //跳转到编辑用户页
+    @RequestMapping("/notify/toEditNotify")
+    public String toEditnotify(Model model, Integer userId) {
+        Notify user = notifyService.getNotifyById(userId);
+        model.addAttribute("notify", user);
+        return "back/notify/edit";
+    }
+
+    @RequestMapping("/notify/editNotify.do")
+    @ResponseBody
+    public String editNotify(Model model, Notify user) {
+        Result result = new Result();
+        int res = notifyService.updateNotifyById(user);
+        if (res > 0) {
+            result.setStatus("200");
+            result.setText("更改成功");
+        } else {
+            result.setStatus("204");
+            result.setText("更改失败");
+        }
+
+//        model.addAttribute("notify", products);
+//        return "back/Product/addSuccess";
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping("/notify/deletenotify.do")
+    @ResponseBody
+    public String deletenotify(Model model, String notifyId) {
+        Result result = new Result();
+        String[] array = notifyId.split(",");
+        if (array != null && array.length > 0) {
+            if (notifyService.deleteNotifyByIds(array) == array.length) {
+                result.setStatus("200");
+                result.setText("删除成功");
+                return JSON.toJSONString(result);
+            }
+        }
+        result.setStatus("204");
+        result.setText("删除失败");
+        return JSON.toJSONString(result);
+    }
+
+    @RequestMapping("/notify/addnotify.do")
+    // 添加商品
+    public String addnotifys(Notify notify) {
+        try {
+            notifyService.addnotify(notify);
+        } catch (Exception e) {
+            return "发生异常";
+        }
+        return "添加成功";
+    }
+
+    //跳转到添加菜单页
+    @RequestMapping("/notify/addproducts.html")
+    public String toAddnotify() {
+        return "/back/notify/add";
+    }
+
+
+
+
+
+
+
+
+
     //跳转到编辑用户页
     @RequestMapping("/User/toEditUser")
     public String toEditUser(Model model, Integer userId) {
@@ -293,6 +380,7 @@ public class AdminController {
         }
         return JSON.toJSONString(result);
     }
+
 
     @RequestMapping("/User/queryUsers.html")
     public String queryUsers(Model model, String username, String truename, String phone, String address) {
